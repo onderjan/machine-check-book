@@ -2,7 +2,7 @@ name: Deployment
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - "src/**.md"
       - "book.toml"
