@@ -3,4 +3,4 @@ authors = ["Jan Onderka"]
 language = "en"
 multilingual = false
 src = "src"
-title = "User guide to machine-check"
+title = "User Guide to machine-check"
