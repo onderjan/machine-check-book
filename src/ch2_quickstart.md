@@ -1,1 +1,9 @@
 # Quickstart
+Let us do some quick verification first before explaining the concepts in detail.
+
+## Installation
+To use machine-check, you first need to have the Rust ecosystem installed on your computer.
+
+## Your first verification
+
+## With the graphical user interface

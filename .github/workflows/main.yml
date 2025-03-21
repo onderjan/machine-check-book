@@ -20,22 +20,25 @@ jobs:
 
       - name: Build docs
         run: |
-          mkdir -p publish/latest
-          mdbook build -d publish/latest
-
+          mkdir -p publish-build/latest
+          mdbook build -d publish-build/latest
       - uses: actions/checkout@v4
         with:
           repository: onderjan/machine-check-book-publish
           token: ${{ secrets.BOOK_PUBLISH_TOKEN }}
+          path: publish-repo
       - name: Publish docs in a separate repository
         run: |
-          cd publish
+          mkdir -p publish-repo
+          cd publish-repo
+          rm -rf *
+          cp -r ../publish-build/* .
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "Documentation update"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          repository: onderjan/machine-check-book-publish
-          github_token: ${{ secrets.BOOK_PUBLISH_TOKEN }}
+          git push https://$USERNAME:$REPO_KEY@github.com/onderjan/machine-check-book-publish.git
+        env:
+          REPO_KEY: ${{ secrets.BOOK_PUBLISH_TOKEN }}
+          USERNAME: github-actions[bot]
+  
