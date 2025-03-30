@@ -1,16 +1,2 @@
 # Installation
 
-
-In **machine-check**, arbitrary finite digital systems can be described using a subset of Rust. The main development use-case is verification of machine-code systems, where the description of the executing processor is combined with the loaded machine code to form the system. Currently, such a description is available for a subset of the functionality of the [AVR ATmega328P](https://www.microchip.com/en-us/product/ATMEGA328P) microcontroller, as discussed [later in this book](./systems/machine-check-avr.md).
-
-## What is machine-check?
-
-Unlike testing, which determines if some specification holds for a specific set of system executions, *formal verification* can determine whether it holds for **all** possible executions. We could technically just try out all executions by building the graph of reachable system states by brute force and checking whether the specification holds over it (*model checking*). However, even a single 32-bit input could result in $2^32$ successor states, an *exponential explosion* of verification time and possibly memory.
-
-In **machine-check**, *Three-valued Abstraction Refinement* is used to reason about the systems more intelligently and cut down on the necessary time and memory. The systems can be described in a subset of Rust and verified against specifications in the form of [Computation Tree Logic](https://en.wikipedia.org/wiki/Computation_tree_logic) properties. 
-
-
-## What machine-check isn't?
- - 
-
-## Soundness & completeness
