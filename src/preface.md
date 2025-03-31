@@ -12,7 +12,7 @@ Unlike testing, which determines if a specification holds for a small set of sys
 
 Unlike some other verifiers, **machine-check** is designed to be *sound*, never returning a wrong verification result[^1], and *complete*, theoretically always returning a result in finite time and memory. While arbitrary finite-systems can be represented, the current focus is on verification of systems comprised of machine-code programs executed on embedded processors.
 
-Interested? [Read the Quickstart.](./machine-check/ch2_quickstart.md)
+Interested? [Read the Quickstart.](./machine-check/ch1_quickstart.md)
 
 > &#x26A0;&#xFE0F; Currently, **machine-check** is in active development, with the [version 0.4.0](https://crates.io/crates/machine-check/0.4.0) described in this guide. While the basic building blocks are in place, some details may still change considerably in the future.
 >
