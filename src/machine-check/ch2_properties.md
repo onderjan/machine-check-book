@@ -52,6 +52,21 @@ $ cargo run -- --property "AX![value == 0]"
 +------------------------------+
 ```
 
+>
+> &#x1F4A1;&#xFE0F; In this handbook, the verifier executable is built in debug mode, and uses the default strategy, using `cargo run -- --property <PROPERTY>`.
+>
+> If verification becomes too slow for your system, try compiling in release mode:
+>
+> `cargo run --release -- --property <PROPERTY>`
+>
+> This will slow down compilation but produce a more optimised executable that will be able to verify faster.
+> You can also try to use **machine-check** with the [decay strategy](./ch4_cli.md) (this can make verification faster or slower based on the system):
+>
+> `cargo run --release -- --property <PROPERTY> --strategy decay`
+>
+> Note that the `--` argument that separates the arguments for the build tool cargo from the arguments that will be passed to the built program and processed by **machine-check**.
+>
+
 Of course this does not hold: we can increment the value, so `value` will no longer be zero in **all** of the next states! But what about it being zero in **at least one** next state? That should hold: if the `increment_value` input is 0, we will retain zero `value`. Instead of **AX**\[*φ*\], we will use the **EX**\[*φ*\] operator: there exists a path where *φ* holds in next state. Let's try to verify.
 
 ```console
