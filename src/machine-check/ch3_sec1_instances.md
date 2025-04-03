@@ -2,7 +2,7 @@
 
 It is useful to be able to change the behaviour of the system under verification at runtime, e.g. using command-line arguments, so that the system does not need to be changed and recompiled to change some part of its behaviour. Consider the part of the example from the previous section:
 
-```console
+```rust
 (...)
 
     #[derive(Clone, PartialEq, Eq, Hash, Debug)]
@@ -41,7 +41,7 @@ fn main() {
 
 Let us suppose that we want to specify the maximum `value`, after which it wraps, and supply the value from the main function. We can do this by extending the struct `System` with a new field as follows:
 
-```console
+```rust
 (...)
     use ::machine_check::Unsigned;
     use ::std::convert::Into;
