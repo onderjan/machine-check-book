@@ -1,11 +1,5 @@
 # Quickstart
 
->
-> &#x1F393;&#xFE0F; This chapter of the book is still being developed and may change significantly.
-> Please come back in a few days.
->
-
-
 If you are a Rust user, you can [skip to the usage](#using-machine-check). You can also try out [the quick example](https://crates.io/crates/machine-check) from the **machine-check** readme.
 
 ## Setting up Rust
