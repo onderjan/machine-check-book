@@ -22,9 +22,15 @@ cargo run -- --property "value == 0"
 +------------------------------+
 ```
 
-Let's not focus on what the messages or numbers mean and just look at the verification result.  **Machine-check** has determined that the property `value == 0` holds, which matches the definition of the init function. Note that if the system had multiple initial states, the convention is to verify whether the property holds in all of them. But since we only have one initial state where `value = 0`, we don't have to think about this. 
+Let's not focus on what the messages or numbers mean and just look at the verification result.  **Machine-check** has determined that the property `value == 0` holds, which matches the definition of the init function. 
 
-Verifying a single state is admittedly quite boring. The real power of the [Computation Tree Logic](http://en.wikipedia.org/wiki/Computation_tree_logic) (CTL) is that we can reason about things *temporally*, looking into states in the future. For example, we can use the *temporal operator* **AX**\[*a*\] which means "for all paths, *a* will hold in the next state" to say "for all paths, `value` will be 0 in the current state". Note that in **machine-check**, since the paths are determined only by the machine inputs, we can also say "for all inputs" instead of "for all paths", which can be more intutive. In **machine-check** property syntax, we write this as `AX![value == 0]`. Note the exclamation mark after `AX`: this is done as the property syntax emulates Rust syntax and it makes a lot of sense to think of the temporal properties as macros, since they change what the variables inside them represent. That aside, let's try to verify.
+>
+> &#x26A0;&#xFE0F; Currently, if the system has multiple initial states, **machine-check** follows the convention that the property holds exactly if it holds in all of the initial states.
+>
+> This behaviour may change in the future once system parametrisation is implemented.
+>
+
+Verifying a single state is admittedly quite boring. The real power of the [Computation Tree Logic](http://en.wikipedia.org/wiki/Computation_tree_logic) (CTL) is that we can reason about things *temporally*, looking into states in the future. For example, we can use the *temporal operator* **AX**\[*φ*\] which means "for all paths, *φ* will hold in the next state" to say "for all paths, `value` will be 0 in the current state". In **machine-check**, since the paths are determined only by the machine inputs, we can also say "for all input sequences" instead of "for all paths", which can be more intutive. In **machine-check** property syntax, we write this as `AX![value == 0]`. The exclamation mark after `AX`: this is done as the property syntax emulates Rust syntax and it makes a lot of sense to think of the temporal properties as macros, since they change what the variables inside them represent. That aside, let's try to verify.
 
 ```console
 $ cargo run -- --property "AX![value == 0]"
@@ -46,7 +52,7 @@ $ cargo run -- --property "AX![value == 0]"
 +------------------------------+
 ```
 
-Of course this does not hold: we can increment the value, so `value` will no longer be zero in **all** of the next states! But what about it being zero in **at least one** next state? That should hold: if the `increment_value` input is 0, we will retain zero `value`. Instead of **AX**\[a\], we will use the **EX**\[*a*\] operator: there exists a path where *a* holds in next state. Let's try to verify.
+Of course this does not hold: we can increment the value, so `value` will no longer be zero in **all** of the next states! But what about it being zero in **at least one** next state? That should hold: if the `increment_value` input is 0, we will retain zero `value`. Instead of **AX**\[*φ*\], we will use the **EX**\[*φ*\] operator: there exists a path where *φ* holds in next state. Let's try to verify.
 
 ```console
 $ cargo run -- --property "EX![value == 0]"
@@ -68,7 +74,7 @@ $ cargo run -- --property "EX![value == 0]"
 +------------------------------+
 ```
 
-Wonderful. But we have just started to discover the possibilities. While **AX** and **EX** can be used to reason about the states directly after the current one, CTL also contains operators we can use to reason about unbounded periods of time. **AG**\[*a*\] means that for all inputs, the property *a* will hold *globally*, i.e. in all time instants including and after this one. In our example, for all input sequences, `value` will globally be lesser or equal to 15. (In case **AG** is used as the outer operator, this is usually written as "in all reachable states, `value` will be lesser or equal to 15.") Note that writing this as a **machine-check** property, we have to explicitly say that `value` should be compared as an unsigned number using `as_unsigned` before comparing it:
+Wonderful. But we have just started to discover the possibilities. While **AX** and **EX** can be used to reason about the states directly after the current one, CTL also contains operators we can use to reason about unbounded periods of time. **AG**\[*φ*\] means that for all input sequences, the property *φ* will hold *globally*, i.e. in all time instants including and after this one. In our example, for all input sequences, `value` will globally be lesser or equal to 15. (In case **AG** is used as the outer operator, this is usually written as "in all reachable states, `value` will be lesser or equal to 15.") Writing this as a **machine-check** property, we have to explicitly say that `value` should be compared as an unsigned number using `as_unsigned` before comparing it:
 
 ```console
 $ cargo run -- --property "AG![as_unsigned(value) <= 15]"
@@ -90,7 +96,7 @@ $ cargo run -- --property "AG![as_unsigned(value) <= 15]"
 +------------------------------+
 ```
 
-While this would not hold for a constant lesser than 15 (you can try it), **EG**\[*a*\] means that there is an infinite sequence of inputs where *a* holds globally. Reasonably, we can expect that `value` stays to be zero when the `increment_value` input is always kept 0:
+While this would not hold for a constant lesser than 15 (you can try it), **EG**\[*φ*\] means that there is an infinite input sequence where *φ* holds globally. Reasonably, we can expect that `value` stays to be zero when the `increment_value` input is always kept 0:
 
 ```console
 $ cargo run -- --property "EG![value == 0]"
@@ -134,7 +140,7 @@ $ cargo run -- --property "EG![value == 3]"
 +------------------------------+
 ```
 
-It does not, since `value` is 0 at the start. To reason about the future, we can use the **AF** and **EF** operators. **AF**\[*a*\] means that for all input sequences, *a* holds *eventually*. Note that this can be either currently or in the future. **EF**\[*a*\] means that there exists an input sequence for which *a* holds eventually, which is a bit more interesting in the context of our example:
+It does not, since `value` is 0 at the start. To reason about the future, we can use the **AF** and **EF** operators. **AF**\[*φ*\] means that for all input sequences, *φ* holds *eventually*. This can be either currently or in the future. **EF**\[*φ*\] means that there exists an input sequence for which *φ* holds eventually, which is a bit more interesting in the context of our example:
 
 ```console
 $ cargo run -- --property "EF![as_unsigned(value) == 3]"
@@ -177,11 +183,11 @@ cargo run -- --property "EF![EG![value == 3]]"
 |  Final transitions:       13  |
 +-------------------------------+
 ```
-For even more descriptive properties, we can use the **AU**, **EU**, **AR**, and **ER** CTL operators[^1]. These take two arguments. Nothwithstanding the difference in the input sequence requirements, **AU**\[*a*,*b*\] and **EU**\[*a*,*b*\] stipulate that *a* should hold *until* *b* holds, although not necessarily in the position where *b* first holds, and *b* must hold eventually.  **AR**\[*a*,*b*\] and **ER**\[*a*,*b*\] stipulate that *a* *releases* *b*: *b* has to hold before and including the point where *a* first holds, and if *a* never holds, *b* must hold globally. Notice how **AU**/**EU** and **AR**/**ER** are essentially extensions of  **AF**/**EF** and **AG**/**EG**, respectively.
+For even more descriptive properties, we can use the **AU**, **EU**, **AR**, and **ER** CTL operators[^1]. These take two arguments. Nothwithstanding the difference in the input sequence requirements, **AU**\[*φ*,*b*\] and **EU**\[*φ*,*b*\] stipulate that *φ* should hold *until* *b* holds, although not necessarily in the position where *b* first holds, and *b* must hold eventually.  **AR**\[*φ*,*b*\] and **ER**\[*φ*,*b*\] stipulate that *φ* *releases* *b*: *b* has to hold before and including the point where *φ* first holds, and if *φ* never holds, *b* must hold globally. Notice how **AU**/**EU** and **AR**/**ER** are essentially extensions of  **AF**/**EF** and **AG**/**EG**, respectively.
 
 [^1]: The **AR** and **ER** operators are usually not described in the literature on CTL, but can be derived from other operators.
 
-For example, we can make sure that there exists a sequence of inputs where `value` is lesser than 3 until it is 3 (which occurs eventually):
+For example, we can make sure that there exists an input sequence where `value` is lesser than 3 until it is 3 (which occurs eventually):
 
 ```console
 $ cargo run -- --property "EU![as_unsigned(value) < 3, value == 3]"
@@ -225,7 +231,9 @@ $ cargo run -- --property "AR![value == 3, as_unsigned(value) <= 3]"
 +-------------------------------+
 ```
 
-Note the differences in the formulation of the properties. In addition to CTL operators, **machine-check** properties support logical not (`!`), and (`&&`), or (`||`) operators, letting us construct more descriptive properties. For example, we can say that in all reachable states, `value` being 5 implies that, for all inputs, it will be 5 or 6 in the next step. Since an implication *a* => *b* can be written as `!(a) || b`, we can verify:
+Note the differences in the formulation of the previous two properties.
+
+In addition to CTL operators, **machine-check** properties support logical not (`!`), and (`&&`), or (`||`) operators, letting us construct more descriptive properties. For example, we can say that in all reachable states, `value` being 5 implies that, for all input sequences, it will be 5 or 6 in the next step. Since an implication *φ* => *b* can be written as `!(a) || b`, we can verify:
 
 
 ```console
@@ -270,4 +278,4 @@ cargo run -- --property "AG![EF![value == 0]]"
 +-------------------------------+
 ```
 
-Note that this property is not possible to verify using formal verification tools that use verification based on traditional Counterexample-based Abstraction Refinement. **Machine-check** can verify this property thanks to [the used Three-valued Abstraction Refinement framework](../under_the_hood/research.md).
+Notably, this property is not possible to verify using formal verification tools that use verification based on the traditional Counterexample-based Abstraction Refinement. **Machine-check** can verify this property thanks to [the used Three-valued Abstraction Refinement framework](../under_the_hood/research.md).
