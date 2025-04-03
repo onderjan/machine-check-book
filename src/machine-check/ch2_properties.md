@@ -198,11 +198,11 @@ cargo run -- --property "EF![EG![value == 3]]"
 |  Final transitions:       13  |
 +-------------------------------+
 ```
-For even more descriptive properties, we can use the **AU**, **EU**, **AR**, and **ER** CTL operators[^1]. These take two arguments. Nothwithstanding the difference in the input sequence requirements, **AU**\[*φ*,*b*\] and **EU**\[*φ*,*b*\] stipulate that *φ* should hold *until* *b* holds, although not necessarily in the position where *b* first holds, and *b* must hold eventually.  **AR**\[*φ*,*b*\] and **ER**\[*φ*,*b*\] stipulate that *φ* *releases* *b*: *b* has to hold before and including the point where *φ* first holds, and if *φ* never holds, *b* must hold globally. Notice how **AU**/**EU** and **AR**/**ER** are essentially extensions of  **AF**/**EF** and **AG**/**EG**, respectively.
+For even more descriptive properties, we can use the **AU**, **EU**, **AR**, and **ER** CTL operators[^1]. These take two arguments. Nothwithstanding the difference in the input sequence requirements, **A**\[*φ*\]**U**\[*ψ*\] and **E**\[*φ*\]**U**\[*ψ*\] stipulate that *φ* should hold *until* *ψ* holds, although not necessarily in the position where *ψ* first holds, and *ψ* must hold eventually.  **A**\[*φ*\]**R**\[*ψ*\] and **E**\[*φ*\]**R**\[*ψ*\] stipulate that *φ* *releases* *ψ*: *ψ* has to hold before and including the point where *φ* first holds, and if *φ* never holds, *ψ* must hold globally. Notice how **AU**/**EU** and **AR**/**ER** are essentially extensions of  **AF**/**EF** and **AG**/**EG**, respectively.
 
 [^1]: The **AR** and **ER** operators are usually not described in the literature on CTL, but can be derived from other operators.
 
-For example, we can make sure that there exists an input sequence where `value` is lesser than 3 until it is 3 (which occurs eventually):
+In **machine-check** properties, we write these operators as macros with two arguments. For example, we can make sure that there exists an input sequence where `value` is lesser than 3 until it is 3 (which occurs eventually):
 
 ```console
 $ cargo run -- --property "EU![as_unsigned(value) < 3, value == 3]"
@@ -248,7 +248,7 @@ $ cargo run -- --property "AR![value == 3, as_unsigned(value) <= 3]"
 
 Note the differences in the formulation of the previous two properties.
 
-In addition to CTL operators, **machine-check** properties support logical not (`!`), and (`&&`), or (`||`) operators, letting us construct more descriptive properties. For example, we can say that in all reachable states, `value` being 5 implies that, for all input sequences, it will be 5 or 6 in the next step. Since an implication *φ* => *b* can be written as `!(a) || b`, we can verify:
+In addition to CTL operators, **machine-check** properties support logical not (`!`), and (`&&`), or (`||`) operators, letting us construct more descriptive properties. For example, we can say that in all reachable states, `value` being 5 implies that, for all input sequences, it will be 5 or 6 in the next step. Since an implication *φ* ⇒ *ψ* [can be written](https://en.wikipedia.org/wiki/Material_conditional#Semantics) as ¬*φ* ∨ *ψ*, we can verify:
 
 
 ```console
