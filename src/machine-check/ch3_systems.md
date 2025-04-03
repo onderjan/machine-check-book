@@ -1,11 +1,6 @@
 # Systems
 
->
-> &#x1F393;&#xFE0F; This chapter of the book is still being developed and may change significantly.
-> Please come back in a few days.
->
-
-Let us return to the [Quickstart](ch1_quickstart) example:
+To explain the form of the systems in **machine-check**, let us return to the [Quickstart](ch1_quickstart) example:
 
 ```rust
 #[machine_check::machine_description]
