@@ -27,7 +27,7 @@ Continuing with `hello-machine-check` from [Quickstart](./ch1_quickstart.md):
 $ cargo run --features gui -- --property "AG![EF![value == 0]]" --gui
 (... compiling, building 272 crates ...)
    Compiling machine-check v0.4.0
-   Compiling hello-machine-check v0.1.0 (C:\Users\Mallory\rust\machine-check-book\hello-machine-check)
+   Compiling hello-machine-check v0.1.0 ((...)\hello-machine-check)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 47.60s
      Running `target\debug\hello-machine-check.exe --property "AG![EF![value == 0]]" --gui`
 [2025-04-04T12:01:06Z INFO  machine_check_gui::backend::window] GUI window opened
