@@ -26,3 +26,5 @@ Interested? [Read the Quickstart.](./machine-check/ch1_quickstart.md)
  - [Development repository at GitHub](https://github.com/onderjan/machine-check)
 
 [^1]: In other words, if the wrong verification result is returned, this is always considered a bug in **machine-check**. If you encounter a bug, [please report it](https://github.com/onderjan/machine-check/issues).
+
+Just like **machine-check**, this book is available under the Apache 2.0 or MIT licence. Its original sources [are available at GitHub](https://github.com/onderjan/machine-check-book).
