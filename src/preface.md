@@ -17,10 +17,6 @@ Interested? [Read the Quickstart.](./machine-check/ch1_quickstart.md)
 > &#x26A0;&#xFE0F; Currently, **machine-check** is in active development, with the [version 0.4.0](https://crates.io/crates/machine-check/0.4.0) described in this guide. While the basic building blocks are in place, some details may still change considerably in the future.
 >
 
->
-> &#x1F6A7; This user guide is still under construction. 
-> It should be finished in a few days.
->
 
 ## Useful links
  - [The main website](https://machine-check.org/)
