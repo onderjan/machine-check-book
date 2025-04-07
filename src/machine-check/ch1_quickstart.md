@@ -109,7 +109,7 @@ That is a lot of code. Fortunately, most of it is just boilerplate around the co
 
 Currently, **machine-check** can verify [Computation Tree Logic](http://en.wikipedia.org/wiki/Computation_tree_logic) properties of the systems. For example, we can determine that from every reachable state of the system, we can, through some sequence of inputs, get to a state where `value` is zero:
 ```console
-cargo run -- --property "AG![EF![value == 0]]"
+cargo run -- --property 'AG![EF![value == 0]]'
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
      Running `target\debug\hello-machine-check.exe --property "AG![EF![value == 0]]"`
 [2025-04-03T14:55:21Z INFO  machine_check] Starting verification.

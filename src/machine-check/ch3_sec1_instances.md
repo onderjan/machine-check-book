@@ -99,7 +99,7 @@ fn main() {
 We introduced a new four-bit bit-vector field `max_value` in the `System` struct, and added a condition in the `next` function that converts the next value and maximum value to an unsigned interpretation, and if the next value is larger, it is zeroed. In the main function, we print the command to the user to write the maximum system value, and after we read it, we construct the system accordingly. The `main` function is fully standard Rust. We can now try to verify that there exists an input sequence using which we eventually get to `value` being 10, using a few different values:
 
 ```console
-$ cargo run -- --property "EF![value == 10]"
+$ cargo run -- --property 'EF![value == 10]'
    Compiling hello-machine-check v0.1.0 (...)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.14s
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
@@ -117,7 +117,7 @@ Write the maximum system value: 5
 |  Generated transitions:   25  |
 |  Final transitions:       13  |
 +-------------------------------+
-$ cargo run -- --property "EF![value == 10]"
+$ cargo run -- --property 'EF![value == 10]'
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
 Write the maximum system value: 12
@@ -135,7 +135,7 @@ Write the maximum system value: 12
 |  Generated transitions:   43  |
 |  Final transitions:       24  |
 +-------------------------------+
-$ cargo run -- --property "EF![value == 10]"
+$ cargo run -- --property 'EF![value == 10]'
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
 Write the maximum system value: 20
@@ -170,7 +170,7 @@ Sometimes, we want to disallow verification of a system containing some instance
 
 Now, the verification will return an error when verifying a property and a panic can eventually occur with some input sequence (i.e. **EF**\[*panic*\]):
 ```console
-$ cargo run -- --property "EF![value == 10]"    
+$ cargo run -- --property 'EF![value == 10]'    
    Compiling hello-machine-check v0.1.0 (...)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.14s
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
@@ -192,7 +192,7 @@ Write the maximum system value: 5
 
 However, in case the panic cannot occur, the verification will proceed normally:
 ```console
-$ cargo run -- --property "EF![value == 15]"
+$ cargo run -- --property 'EF![value == 15]'
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
      Running `target\debug\hello-machine-check.exe --property "EF![value == 15]"`
 Write the maximum system value: 15

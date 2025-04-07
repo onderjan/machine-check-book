@@ -24,7 +24,7 @@ The GUI will open prepared to verify the inherent property. You can also use `--
 Continuing with `hello-machine-check` from [Quickstart](./ch1_quickstart.md):
 
 ```console
-$ cargo run --features gui -- --property "AG![EF![value == 0]]" --gui
+$ cargo run --features gui -- --property 'AG![EF![value == 0]]' --gui
 (... compiling, building 272 crates ...)
    Compiling machine-check v0.4.0
    Compiling hello-machine-check v0.1.0 ((...)\hello-machine-check)
