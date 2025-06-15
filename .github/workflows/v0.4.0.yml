@@ -1,0 +1,41 @@
+name: Deployment v0.4.0
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: refs/tags/v0.4.0
+          
+      - name: Setup mdbook
+        uses: peaceiris/actions-mdbook@v1
+        with:
+          mdbook-version: 'latest'
+
+      - name: Build docs
+        run: |
+          mkdir -p publish-build/0.4.0
+          mdbook build -d publish-build/0.4.0
+      - uses: actions/checkout@v4
+        with:
+          repository: onderjan/machine-check-book-publish
+          token: ${{ secrets.BOOK_PUBLISH_TOKEN }}
+          path: publish-repo
+      - name: Publish docs in a separate repository
+        run: |
+          mkdir -p publish-repo
+          cd publish-repo
+          rm -rf */0.4.0
+          cp -r ../publish-build/* .
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Documentation update"
+          git push https://$USERNAME:$REPO_KEY@github.com/onderjan/machine-check-book-publish.git
+        env:
+          REPO_KEY: ${{ secrets.BOOK_PUBLISH_TOKEN }}
+          USERNAME: github-actions[bot]
+  
