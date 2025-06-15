@@ -16,6 +16,7 @@
 
 # System Crates
 - [machine-check-avr](./systems/machine-check-avr.md)
+- [machine-check-hw](./systems/machine-check-hw.md)
 
 # Under the Hood
  - [Underlying Research](./under_the_hood/research.md)
