@@ -3,14 +3,14 @@
 **Machine-check** can verify properties in [Computation Tree Logic](http://en.wikipedia.org/wiki/Computation_tree_logic). Let's start with a very simple property: is the value zero at the start of the computation?
 
 ```console
-cargo run -- --property 'value == 0'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
-     Running `target\debug\hello-machine-check.exe --property 'value == 0'`
-[2025-03-31T17:17:20Z INFO  machine_check] Starting verification.
-[2025-03-31T17:17:20Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-03-31T17:17:20Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-03-31T17:17:20Z INFO  machine_check::verify] Verifying the given property.
-[2025-03-31T17:17:20Z INFO  machine_check] Verification ended.
+$ cargo run -- --property 'value == 0'
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 15.49s
+     Running `target\debug\hello-machine-check.exe --property "value == 0"`
+[2025-06-15T13:54:26Z INFO  machine_check] Starting verification.
+[2025-06-15T13:54:26Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:54:26Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:54:26Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:54:26Z INFO  machine_check] Verification ended.
 +------------------------------+
 |        Result: HOLDS         |
 +------------------------------+
@@ -32,15 +32,22 @@ Let's not focus on what the messages or numbers mean and just look at the verifi
 
 Verifying a single state is admittedly quite boring. The real power of the [Computation Tree Logic](http://en.wikipedia.org/wiki/Computation_tree_logic) (CTL) is that we can reason about things *temporally*, looking into states in the future. For example, we can use the *temporal operator* **AX**\[*φ*\] which means "for all paths, *φ* will hold in the next state" to say "for all paths, `value` will be 0 in the current state". In **machine-check**, since the paths are determined only by the machine inputs, we can also say "for all input sequences" instead of "for all paths", which can be more intutive. In **machine-check** property syntax, we write this as `AX![value == 0]`. The exclamation mark after `AX`: this is done as the property syntax emulates Rust syntax and it makes a lot of sense to think of the temporal properties as macros, since they change what the variables inside them represent. That aside, let's try to verify.
 
+>
+> &#x1F4A1;&#xFE0F; In some shells such as `bash`, the exclamation mark (!) [can have a special meaning even when double-quoted](https://www.gnu.org/software/bash/manual/html_node/Double-Quotes.html). 
+> Always put the properties in single quotes when supplying them on command line shell to prevent problems.
+>
+
+
+
 ```console
 $ cargo run -- --property 'AX![value == 0]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.12s
      Running `target\debug\hello-machine-check.exe --property "AX![value == 0]"`
-[2025-03-31T17:34:28Z INFO  machine_check] Starting verification.
-[2025-03-31T17:34:28Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-03-31T17:34:28Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-03-31T17:34:28Z INFO  machine_check::verify] Verifying the given property.
-[2025-03-31T17:34:28Z INFO  machine_check] Verification ended.
+[2025-06-15T13:54:54Z INFO  machine_check] Starting verification.
+[2025-06-15T13:54:54Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:54:54Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:54:54Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:54:54Z INFO  machine_check] Verification ended.
 +------------------------------+
 |    Result: DOES NOT HOLD     |
 +------------------------------+
@@ -71,13 +78,13 @@ Of course this does not hold: we can increment the value, so `value` will no lon
 
 ```console
 $ cargo run -- --property 'EX![value == 0]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --property "EX![value == 0]"`
-[2025-03-31T17:38:09Z INFO  machine_check] Starting verification.
-[2025-03-31T17:38:09Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-03-31T17:38:09Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-03-31T17:38:09Z INFO  machine_check::verify] Verifying the given property.
-[2025-03-31T17:38:09Z INFO  machine_check] Verification ended.
+[2025-06-15T13:55:03Z INFO  machine_check] Starting verification.
+[2025-06-15T13:55:03Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:55:03Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:55:03Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:55:03Z INFO  machine_check] Verification ended.
 +------------------------------+
 |        Result: HOLDS         |
 +------------------------------+
@@ -93,13 +100,13 @@ Wonderful. But we have just started to discover the possibilities. While **AX** 
 
 ```console
 $ cargo run -- --property 'AG![as_unsigned(value) <= 15]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --property "AG![as_unsigned(value) <= 15]"`
-[2025-04-03T13:50:16Z INFO  machine_check] Starting verification.
-[2025-04-03T13:50:16Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T13:50:16Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-04-03T13:50:16Z INFO  machine_check::verify] Verifying the given property.
-[2025-04-03T13:50:16Z INFO  machine_check] Verification ended.
+[2025-06-15T13:55:14Z INFO  machine_check] Starting verification.
+[2025-06-15T13:55:14Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:55:14Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:55:14Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:55:14Z INFO  machine_check] Verification ended.
 +------------------------------+
 |        Result: HOLDS         |
 +------------------------------+
@@ -115,13 +122,13 @@ While this would not hold for a constant lesser than 15 (you can try it), **EG**
 
 ```console
 $ cargo run -- --property 'EG![value == 0]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --property "EG![value == 0]"`
-[2025-04-03T13:53:09Z INFO  machine_check] Starting verification.
-[2025-04-03T13:53:09Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T13:53:09Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-04-03T13:53:09Z INFO  machine_check::verify] Verifying the given property.
-[2025-04-03T13:53:09Z INFO  machine_check] Verification ended.
+[2025-06-15T13:55:24Z INFO  machine_check] Starting verification.
+[2025-06-15T13:55:24Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:55:24Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:55:24Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:55:24Z INFO  machine_check] Verification ended.
 +------------------------------+
 |        Result: HOLDS         |
 +------------------------------+
@@ -139,11 +146,11 @@ Great. What if we try to verify if it stays to be 3?
 $ cargo run -- --property 'EG![value == 3]'
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --property "EG![value == 3]"`
-[2025-04-03T13:56:23Z INFO  machine_check] Starting verification.
-[2025-04-03T13:56:23Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T13:56:23Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-04-03T13:56:23Z INFO  machine_check::verify] Verifying the given property.
-[2025-04-03T13:56:23Z INFO  machine_check] Verification ended.
+[2025-06-15T13:55:34Z INFO  machine_check] Starting verification.
+[2025-06-15T13:55:34Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:55:34Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:55:34Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:55:34Z INFO  machine_check] Verification ended.
 +------------------------------+
 |    Result: DOES NOT HOLD     |
 +------------------------------+
@@ -159,13 +166,13 @@ It does not, since `value` is 0 at the start. To reason about the future, we can
 
 ```console
 $ cargo run -- --property 'EF![as_unsigned(value) == 3]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --property "EF![as_unsigned(value) == 3]"`
-[2025-04-03T14:05:00Z INFO  machine_check] Starting verification.
-[2025-04-03T14:05:00Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T14:05:00Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-04-03T14:05:00Z INFO  machine_check::verify] Verifying the given property.
-[2025-04-03T14:05:00Z INFO  machine_check] Verification ended.
+[2025-06-15T13:55:46Z INFO  machine_check] Starting verification.
+[2025-06-15T13:55:46Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:55:46Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:55:46Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:55:46Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -180,14 +187,14 @@ $ cargo run -- --property 'EF![as_unsigned(value) == 3]'
 The nice thing about CTL is that we can build more interesting reasoning from nesting the operators. Let us suppose we want to make sure that there exists an input sequence which eventually reaches a state where there exists an input sequence where `value` is then globally equal to 3:
 
 ```console
-cargo run -- --property 'EF![EG![value == 3]]'
+$ cargo run -- --property 'EF![EG![value == 3]]'
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --property "EF![EG![value == 3]]"`
-[2025-04-03T14:09:30Z INFO  machine_check] Starting verification.
-[2025-04-03T14:09:30Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T14:09:30Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-04-03T14:09:30Z INFO  machine_check::verify] Verifying the given property.
-[2025-04-03T14:09:30Z INFO  machine_check] Verification ended.
+[2025-06-15T13:55:58Z INFO  machine_check] Starting verification.
+[2025-06-15T13:55:58Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:55:58Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:55:58Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:55:58Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -206,13 +213,13 @@ In **machine-check** properties, we write these operators as macros with two arg
 
 ```console
 $ cargo run -- --property 'EU![as_unsigned(value) < 3, value == 3]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --property "EU![as_unsigned(value) < 3, value == 3]"`
-[2025-04-03T14:36:52Z INFO  machine_check] Starting verification.
-[2025-04-03T14:36:52Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T14:36:52Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-04-03T14:36:52Z INFO  machine_check::verify] Verifying the given property.
-[2025-04-03T14:36:52Z INFO  machine_check] Verification ended.
+[2025-06-15T13:56:08Z INFO  machine_check] Starting verification.
+[2025-06-15T13:56:08Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:56:08Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:56:08Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:56:08Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -228,13 +235,13 @@ And for all input sequences, `value` being 3 releases the requirement for `value
 
 ```console
 $ cargo run -- --property 'AR![value == 3, as_unsigned(value) <= 3]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
      Running `target\debug\hello-machine-check.exe --property "AR![value == 3, as_unsigned(value) <= 3]"`
-[2025-04-03T14:38:32Z INFO  machine_check] Starting verification.
-[2025-04-03T14:38:32Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T14:38:32Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-04-03T14:38:32Z INFO  machine_check::verify] Verifying the given property.
-[2025-04-03T14:38:32Z INFO  machine_check] Verification ended.
+[2025-06-15T13:56:18Z INFO  machine_check] Starting verification.
+[2025-06-15T13:56:18Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:56:18Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:56:18Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:56:18Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -253,13 +260,13 @@ In addition to CTL operators, **machine-check** properties support logical not (
 
 ```console
 $ cargo run -- --property 'AG![!(value == 5) || AX![value == 5 || value == 6]]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --property "AG![!(value == 5) || AX![value == 5 || value == 6]]"`
-[2025-04-03T14:44:02Z INFO  machine_check] Starting verification.
-[2025-04-03T14:44:02Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T14:44:02Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-04-03T14:44:02Z INFO  machine_check::verify] Verifying the given property.
-[2025-04-03T14:44:02Z INFO  machine_check] Verification ended.
+[2025-06-15T13:56:27Z INFO  machine_check] Starting verification.
+[2025-06-15T13:56:27Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:56:27Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:56:27Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:56:27Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -274,14 +281,14 @@ $ cargo run -- --property 'AG![!(value == 5) || AX![value == 5 || value == 6]]'
 Last but not least, going back to the example from [Quickstart](./ch1_quickstart.md), we can verify a *recovery* property stating that in all reachable states, there exists an input sequence where we can get back to `value` being zero:
 
 ```console
-cargo run -- --property 'AG![EF![value == 0]]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
+$ cargo run -- --property 'AG![EF![value == 0]]'
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --property "AG![EF![value == 0]]"`
-[2025-04-03T14:55:21Z INFO  machine_check] Starting verification.
-[2025-04-03T14:55:21Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T14:55:21Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-04-03T14:55:21Z INFO  machine_check::verify] Verifying the given property.
-[2025-04-03T14:55:21Z INFO  machine_check] Verification ended.
+[2025-06-15T13:56:35Z INFO  machine_check] Starting verification.
+[2025-06-15T13:56:35Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:56:35Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:56:35Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:56:35Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+

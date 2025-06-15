@@ -25,12 +25,12 @@ Continuing with `hello-machine-check` from [Quickstart](./ch1_quickstart.md):
 
 ```console
 $ cargo run --features gui -- --property 'AG![EF![value == 0]]' --gui
-(... compiling, building 272 crates ...)
-   Compiling machine-check v0.4.0
+(... compiling, building ~300 crates ...)
+   Compiling machine-check v0.5.0
    Compiling hello-machine-check v0.1.0 ((...)\hello-machine-check)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 47.60s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 10.92s
      Running `target\debug\hello-machine-check.exe --property "AG![EF![value == 0]]" --gui`
-[2025-04-04T12:01:06Z INFO  machine_check_gui::backend::window] GUI window opened
+[2025-06-15T14:59:21Z INFO  machine_check_gui::backend::window] GUI window opened
 ```
 
 A window like this should open:
@@ -63,12 +63,12 @@ features no panics whatsoever.
 The state after #1 should be incremented based on the the input `increment_value`. But there is only one successor, state #2. We can navigate to it 
 to see that it has the value `"000X"`. This is *three-valued bit-vector abstraction*: the *abstract* state #2 can stand for either `"0000"` or `"0001"`. In
 **machine-check**, it stands for at least one of them but not necessarily both. Moving to the next states, we can see that `value` changes to `"00XX"`,
-`"0XXX"`, and lastly `XXXX` in #5, which just loops on itself. The behaviour is regular: when incrementing e.g. `00XX`, it could stand for `0011`, so we would
+`"0XXX"`, and lastly `"XXXX"` in #5, which just loops on itself. The behaviour is regular: when incrementing e.g. `00XX`, it could stand for `0011`, so we would
 end up with `0100` after incrementing. However, it could also stand e.g. for `0010`, so we would end up with `0011` after incrementing. To ensure that the
-verification is sound (never returns a wrong result), **machine-check** ensures the resulting state `0XXX` subsumes all of the possibilities. As it uses 
+verification is sound (never returns a wrong result), **machine-check** ensures the resulting state `"0XXX"` subsumes all of the possibilities. As it uses 
 [a special algorithm](../under_the_hood/research.md) for this, the computation is faster than enumerating all the possibilities.
 
-Even though the `value` is ultimately `XXXX`, no panic occurs when going from any state to the next one. Therefore, as seen in the left properties bar, the
+Even though the `value` is ultimately `"XXXX"`, no panic occurs when going from any state to the next one. Therefore, as seen in the left properties bar, the
 inherent property holds. The warning sign previously seen to the right of the *recovery* property also disappeared: it informed us that as the inherent 
 property had not yet been verified, the result of verifying the recovery property may be ultimately meaningless. (If you are unsure what a property 
 verification icon to the right of the property means, you can read the title text after hovering over it with mouse.)
@@ -78,7 +78,7 @@ While the inherent property has been verified, the visualised state space is now
 <a href="../images/gui_3.png"><img src="../images/gui_3.png" style="width:100%; margin: 1.5em; margin-left: auto; margin-right: auto; display:block"></a>
 
 **Machine-check** decided to refine the input going from #1 to #2. This added a loop from #1 to itself (when `increment_input` is 0) and generated a new state #6
-that, upon inspection, has `value` equal to `0001` (when `increment_input` is 1). Unfortunately, potentially incrementing `0001` again goes to `00XX` represented
+that, upon inspection, has `value` equal to `"0001"` (when `increment_input` is 1). Unfortunately, potentially incrementing `"0001"` again goes to `"00XX"` represented
 by #3, so we have not really progressed much.
 
 Let's now talk more about the property bar. Step the verification four more times. While the property `AG![EF![value == 0]]` is still unknown (symbolised by 

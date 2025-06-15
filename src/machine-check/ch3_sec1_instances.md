@@ -77,9 +77,7 @@ Let us suppose that we want to specify the maximum `value`, after which it wraps
 (...)
 fn main() {
     print!("Write the maximum system value: ");
-    std::io::stdout()
-        .flush()
-        .expect("Should flush standard output");
+    std::io::Write::flush(&mut std::io::stdout()).expect("Should flush standard output");
     let mut read_string = String::new();
     std::io::stdin()
         .read_line(&mut read_string)
@@ -100,16 +98,16 @@ We introduced a new four-bit bit-vector field `max_value` in the `System` struct
 
 ```console
 $ cargo run -- --property 'EF![value == 10]'
-   Compiling hello-machine-check v0.1.0 (...)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.14s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.32s
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
 Write the maximum system value: 5
-[2025-04-03T16:11:59Z INFO  machine_check] Starting verification.
-[2025-04-03T16:11:59Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T16:11:59Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-04-03T16:11:59Z INFO  machine_check::verify] Verifying the given property.
-[2025-04-03T16:11:59Z INFO  machine_check] Verification ended.
+[2025-06-15T13:58:21Z INFO  machine_check] Starting verification.
+[2025-06-15T13:58:21Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:58:21Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:58:21Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:58:21Z INFO  machine_check] Verification ended.
 +-------------------------------+
+|     Result: DOES NOT HOLD     |
 +-------------------------------+
 |  Refinements:              6  |
 |  Generated states:        19  |
@@ -117,15 +115,16 @@ Write the maximum system value: 5
 |  Generated transitions:   25  |
 |  Final transitions:       13  |
 +-------------------------------+
+
 $ cargo run -- --property 'EF![value == 10]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
 Write the maximum system value: 12
-[2025-04-03T16:12:05Z INFO  machine_check] Starting verification.
-[2025-04-03T16:12:05Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T16:12:05Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-04-03T16:12:05Z INFO  machine_check::verify] Verifying the given property.
-[2025-04-03T16:12:05Z INFO  machine_check] Verification ended.
+[2025-06-15T13:58:48Z INFO  machine_check] Starting verification.
+[2025-06-15T13:58:48Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:58:48Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:58:48Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:58:48Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -135,21 +134,19 @@ Write the maximum system value: 12
 |  Generated transitions:   43  |
 |  Final transitions:       24  |
 +-------------------------------+
+
 $ cargo run -- --property 'EF![value == 10]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
 Write the maximum system value: 20
 
-thread 'main' panicked at (...)\mck-0.4.0\src\bitvector\concrete\support.rs:15:13:
+thread 'main' panicked at (...)\mck-0.5.0\src\bitvector\concr\support.rs:17:13:
 Machine bitvector value 20 does not fit into 4 bits
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 error: process didn't exit successfully: `target\debug\hello-machine-check.exe --property "EF![value == 10]"` (exit code: 101)
 ```
 
 For the values of 5 and 12, everything works as intended. Since the four-bit bit-vector cannot be constructed by `Bitvector::new` with the value 20, the program panics.
-
-It is possible to use the command-line arguments 
-
 
 >
 > &#x26A0;&#xFE0F; It is possible to use command-line arguments for the construction of systems, although the current form is highly unstable.
@@ -172,12 +169,12 @@ Now, the verification will return an error when verifying a property and a panic
 ```console
 $ cargo run -- --property 'EF![value == 10]'    
    Compiling hello-machine-check v0.1.0 (...)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.14s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.02s
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
 Write the maximum system value: 5
-[2025-04-03T16:22:02Z INFO  machine_check] Starting verification.
-[2025-04-03T16:22:02Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T16:22:02Z ERROR machine_check] Verification returned an error.
+[2025-06-15T14:53:22Z INFO  machine_check] Starting verification.
+[2025-06-15T14:53:22Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T14:53:22Z ERROR machine_check] Verification returned an error.
 +----------------------------------------------------------------------------------------------------------+
 |                                      Result: ERROR (inherent panic)                                      |
 +----------------------------------------------------------------------------------------------------------+
@@ -193,14 +190,14 @@ Write the maximum system value: 5
 However, in case the panic cannot occur, the verification will proceed normally:
 ```console
 $ cargo run -- --property 'EF![value == 15]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --property "EF![value == 15]"`
 Write the maximum system value: 15
-[2025-04-03T16:23:35Z INFO  machine_check] Starting verification.
-[2025-04-03T16:23:35Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T16:23:35Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-04-03T16:23:35Z INFO  machine_check::verify] Verifying the given property.
-[2025-04-03T16:23:35Z INFO  machine_check] Verification ended.
+[2025-06-15T14:53:51Z INFO  machine_check] Starting verification.
+[2025-06-15T14:53:51Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T14:53:51Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T14:53:51Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T14:53:51Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -218,9 +215,9 @@ $ cargo run -- --inherent
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --inherent`
 Write the maximum system value: 10
-[2025-04-03T16:27:53Z INFO  machine_check] Starting verification.
-[2025-04-03T16:27:53Z INFO  machine_check::verify] Verifying the inherent property.
-[2025-04-03T16:27:53Z INFO  machine_check] Verification ended.
+[2025-06-15T14:54:06Z INFO  machine_check] Starting verification.
+[2025-06-15T14:54:06Z INFO  machine_check::verify] Verifying the inherent property.
+[2025-06-15T14:54:06Z INFO  machine_check] Verification ended.
 +----------------------------------------------------------------------------------------------------------+
 |                                          Result: DOES NOT HOLD                                           |
 +----------------------------------------------------------------------------------------------------------+
@@ -233,12 +230,12 @@ Write the maximum system value: 10
 +----------------------------------------------------------------------------------------------------------+
 
 $ cargo run -- --inherent
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --inherent`
 Write the maximum system value: 15
-[2025-04-03T16:28:14Z INFO  machine_check] Starting verification.
-[2025-04-03T16:28:14Z INFO  machine_check::verify] Verifying the inherent property.
-[2025-04-03T16:28:14Z INFO  machine_check] Verification ended.
+[2025-06-15T14:54:18Z INFO  machine_check] Starting verification.
+[2025-06-15T14:54:18Z INFO  machine_check::verify] Verifying the inherent property.
+[2025-06-15T14:54:18Z INFO  machine_check] Verification ended.
 +------------------------------+
 |        Result: HOLDS         |
 +------------------------------+

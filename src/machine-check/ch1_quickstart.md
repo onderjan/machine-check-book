@@ -41,7 +41,7 @@ In your `Cargo.toml`, add the following dependency:
 
 ```toml
 [dependencies]
-machine-check = "0.4.0"
+machine-check = "0.5.0"
 ```
 
 You can start using **machine-check** in Rust now. Let's create a minimal somewhat interesting system to verify. Put this in your `src/main.rs`:
@@ -109,14 +109,14 @@ That is a lot of code. Fortunately, most of it is just boilerplate around the co
 
 Currently, **machine-check** can verify [Computation Tree Logic](http://en.wikipedia.org/wiki/Computation_tree_logic) properties of the systems. For example, we can determine that from every reachable state of the system, we can, through some sequence of inputs, get to a state where `value` is zero:
 ```console
-cargo run -- --property 'AG![EF![value == 0]]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
+$ cargo run -- --property 'AG![EF![value == 0]]'
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
      Running `target\debug\hello-machine-check.exe --property "AG![EF![value == 0]]"`
-[2025-04-03T14:55:21Z INFO  machine_check] Starting verification.
-[2025-04-03T14:55:21Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-04-03T14:55:21Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-04-03T14:55:21Z INFO  machine_check::verify] Verifying the given property.
-[2025-04-03T14:55:21Z INFO  machine_check] Verification ended.
+[2025-06-15T13:56:51Z INFO  machine_check] Starting verification.
+[2025-06-15T13:56:51Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-06-15T13:56:51Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-06-15T13:56:51Z INFO  machine_check::verify] Verifying the given property.
+[2025-06-15T13:56:51Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
