@@ -31,7 +31,7 @@ jobs:
         run: |
           mkdir -p publish-repo
           cd publish-repo
-          rm -rf *
+          rm -rf */latest
           cp -r ../publish-build/* .
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
