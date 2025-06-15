@@ -12,6 +12,7 @@
   - [System Format](./machine-check/ch3_sec2_system_format.md)
 - [Command-line Interface](./machine-check/ch4_cli.md)
 - [Graphical User Interface](./machine-check/ch5_gui.md)
+- [Abstraction Domains](./machine-check/ch6_domains.md)
 
 # System Crates
 - [machine-check-avr](./systems/machine-check-avr.md)
