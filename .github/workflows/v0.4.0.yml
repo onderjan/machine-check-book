@@ -1,19 +1,15 @@
-name: Deployment
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - master
-    paths:
-      - "src/**.md"
-      - "book.toml"
+name: Deployment v0.4.0
+on: workflow_dispatch
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+        with:
+          ref: refs/tags/v0.4.0
+          
       - name: Setup mdbook
         uses: peaceiris/actions-mdbook@v1
         with:
@@ -21,8 +17,8 @@ jobs:
 
       - name: Build docs
         run: |
-          mkdir -p publish-build/latest
-          mdbook build -d publish-build/latest
+          mkdir -p publish-build/0.4.0
+          mdbook build -d publish-build/0.4.0
       - uses: actions/checkout@v4
         with:
           repository: onderjan/machine-check-book-publish
@@ -32,7 +28,7 @@ jobs:
         run: |
           mkdir -p publish-repo
           cd publish-repo
-          rm -rf */latest
+          rm -rf */0.4.0
           cp -r ../publish-build/* .
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
