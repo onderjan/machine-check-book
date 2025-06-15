@@ -191,7 +191,7 @@ $ cargo uninstall machine-check-avr
 
 
 >
-> &#x26A0;&#xFE0F; Currently, the ease of use of **machine-check-avr** leaves something to be desired: for example, if we want to verify a property depending on some line in the program source code, we have to obtain the mapping of the source-code line to the the value of the Program Counter (`PC`) ourselves. In the future, **machine-check-avr** could be extended to obtain this information automatically from a file with debug information.
+> &#x1F6E0;&#xFE0F; Currently, the ease of use of **machine-check-avr** leaves something to be desired: for example, if we want to verify a property depending on some line in the program source code, we have to obtain the mapping of the source-code line to the the value of the Program Counter (`PC`) ourselves. In the future, **machine-check-avr** could be extended to obtain this information automatically from a file with debug information.
 >
 > &#x26A0;&#xFE0F; It is possible that due to the large amount of generated code, Rust will overflow its stack while optimising `machine-check-avr`, especially when compiling in debug mode. In that case, set the environment variable `RUST_MIN_STACK=4194304`. [See also this Rust issue](https://github.com/rust-lang/rust/issues/93908).
 >

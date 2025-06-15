@@ -5,7 +5,7 @@ The systems are written in a subset of Rust. Generally, the `machine_description
 The systems generally should conform to the structure presented previously. The [examples](https://docs.rs/crate/machine-check//source/examples/) and [the source code of the **machine-check-avr** description](https://docs.rs/crate/machine-check-avr//source/src/system.rs) can be used for inspiration. As such, only the general principles of defining the structures and writing the functions to achieve the desired system behaviour will be detailed here.
 
 >
-> &#x26A0;&#xFE0F; The system format and accepted Rust constructs may change in the future so that the descriptions can be written more easily.
+> &#x1F6E0;&#xFE0F; The system format and accepted Rust constructs may change in the future so that the descriptions can be written more easily.
 >
 
 ## Structures and Fields

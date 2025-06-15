@@ -149,7 +149,7 @@ error: process didn't exit successfully: `target\debug\hello-machine-check.exe -
 For the values of 5 and 12, everything works as intended. Since the four-bit bit-vector cannot be constructed by `Bitvector::new` with the value 20, the program panics.
 
 >
-> &#x26A0;&#xFE0F; It is possible to use command-line arguments for the construction of systems, although the current form is highly unstable.
+> &#x1F6E0;&#xFE0F; It is possible to use command-line arguments for the construction of systems, although the current form is highly unstable.
 >
 > See the source code of [machine-check-avr](../systems/machine-check-avr.md) for details.
 >

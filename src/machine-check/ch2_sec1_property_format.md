@@ -3,7 +3,7 @@
 In this section, the format of properties will be introduced slightly more formally (but ignoring the precise details) using the [Extended Backus-Naur Form](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form). Whitespace is assumed to be stripped between tokens.
 
 >
-> &#x26A0;&#xFE0F; The current property format is a placeholder to approximately emulate Rust syntax. This may change to a proper subset of Rust in the future.
+> &#x1F6E0;&#xFE0F; The current property format is a placeholder to approximately emulate Rust syntax. This may change to a proper subset of Rust in the future.
 >
 > The given EBNF form is only intended for understanding and may not be completely precise.
 >

@@ -141,7 +141,7 @@ The type declarations say that the input type of the FSM (left-side `Input`) is 
 The init function takes the system structure (which has no fields in our case, so is quite useless in this situation) and an input, creating an initial machine state based on that. Our init function just creates a state where `value` is a four-bit bit-vector with the value zero.
 
 >
-> &#x26A0;&#xFE0F; Currently, the initialisation function also takes the input structure as an argument, possibly creating multiple initial states. This will most likely change in the future when parametric systems are implemented.
+> &#x1F6E0;&#xFE0F; Currently, the initialisation function also takes the input structure as an argument, possibly creating multiple initial states. This will most likely change in the future when parametric systems are implemented.
 >
 
 The state function is a bit more interesting:

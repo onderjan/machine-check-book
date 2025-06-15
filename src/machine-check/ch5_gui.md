@@ -162,6 +162,6 @@ The state space has become only slightly larger due to the field `irrelevant` be
 <a href="../images/gui_10.png"><img src="../images/gui_10.png" style="width:100%; margin: 1.5em; margin-left: auto; margin-right: auto; display:block"></a>
 
 >
-> &#x26A0;&#xFE0F; The Graphical User Interface is completely new in **machine-check** 0.4, so there will be some wonkiness. 
+> &#x1F6E0;&#xFE0F; The Graphical User Interface is completely new in **machine-check** 0.4, so there will be some wonkiness. 
 > As with other parts of **machine-check**, further development is planned.
 >
