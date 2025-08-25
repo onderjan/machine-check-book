@@ -100,7 +100,7 @@ We introduced a new four-bit bit-vector field `max_value` in the `System` struct
 
 ```console
 $ cargo run -- --property 'EF![value == 10]'
-   Compiling hello-machine-check v0.1.0 (C:\Users\Mallory\rust\machine-check-book\hello-machine-check)
+   Compiling hello-machine-check v0.1.0 ((...)\hello-machine-check)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.48s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
 note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
@@ -149,7 +149,7 @@ note: to see what the problems were, use the option `--future-incompat-report`, 
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
 Write the maximum system value: 20
 
-thread 'main' panicked at C:\Users\Mallory\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\mck-0.6.0-alpha.2\src\bitvector\concr\support.rs:68:13:
+thread 'main' panicked at (...)\mck-0.6.0\src\bitvector\concr\support.rs:68:13:
 Machine bitvector value 20 does not fit into 4 bits
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 error: process didn't exit successfully: `target\debug\hello-machine-check.exe --property "EF![value == 10]"` (exit code: 101)
@@ -177,7 +177,7 @@ Sometimes, we want to disallow verification of a system containing some instance
 Now, the verification will return an error when verifying a property and a panic can eventually occur with some input sequence (i.e. **EF**\[*panic*\]):
 ```console
 $ cargo run -- --property 'EF![value == 10]'    
-   Compiling hello-machine-check v0.1.0 (C:\Users\Mallory\rust\machine-check-book\hello-machine-check)
+   Compiling hello-machine-check v0.1.0 ((...)\hello-machine-check)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.26s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
 note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`

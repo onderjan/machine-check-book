@@ -78,8 +78,8 @@ cargo install machine-check-avr
     Finished `release` profile [optimized] target(s) in 2m 13s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
 note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
-  Installing C:\Users\Mallory\.cargo\bin\machine-check-avr.exe
-   Installed package `machine-check-avr v0.6.0-alpha.2` (executable `machine-check-avr.exe`)
+  Installing (...)\.cargo\bin\machine-check-avr.exe
+   Installed package `machine-check-avr v0.6.0` (executable `machine-check-avr.exe`)
 ```
 
 >

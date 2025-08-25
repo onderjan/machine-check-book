@@ -26,7 +26,7 @@ Continuing with `hello-machine-check` from [Quickstart](./ch1_quickstart.md):
 ```console
 $ cargo run --features gui -- --property 'AG![EF![value == 0]]' --gui
 (... compiling, building ~300 crates ...)
-   Compiling hello-machine-check v0.1.0 (C:\Users\Mallory\rust\machine-check-book\hello-machine-check)
+   Compiling hello-machine-check v0.1.0 ((...)\hello-machine-check)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.05s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
 note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`

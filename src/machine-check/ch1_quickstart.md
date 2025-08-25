@@ -108,7 +108,7 @@ That is a lot of code. Fortunately, most of it is just boilerplate around the co
 Currently, **machine-check** can verify [Computation Tree Logic](http://en.wikipedia.org/wiki/Computation_tree_logic) properties of the systems. For example, we can determine that from every reachable state of the system, we can, through some sequence of inputs, get to a state where `value` is zero:
 ```console
 $ cargo run -- --property 'AG![EF![value == 0]]'
-   Compiling hello-machine-check v0.1.0 (C:\Users\Mallory\rust\machine-check-book\hello-machine-check)
+   Compiling hello-machine-check v0.1.0 ((...)\hello-machine-check)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.36s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
 note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
