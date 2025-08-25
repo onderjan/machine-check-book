@@ -20,7 +20,7 @@
 
 # Advanced Topics
 - [Parametric Systems](./advanced/adv1_parametric_systems.md)
-- [Properties in μ-calculus](./advanced/adv2_mu_calculus.md)
+- [μ-calculus Properties](./advanced/adv2_mu_calculus.md)
 
 # Under the Hood
  - [Underlying Research](./under_the_hood/research.md)
