@@ -26,11 +26,12 @@ Continuing with `hello-machine-check` from [Quickstart](./ch1_quickstart.md):
 ```console
 $ cargo run --features gui -- --property 'AG![EF![value == 0]]' --gui
 (... compiling, building ~300 crates ...)
-   Compiling machine-check v0.5.0
-   Compiling hello-machine-check v0.1.0 ((...)\hello-machine-check)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 10.92s
+   Compiling hello-machine-check v0.1.0 (C:\Users\Mallory\rust\machine-check-book\hello-machine-check)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.05s
+warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
      Running `target\debug\hello-machine-check.exe --property "AG![EF![value == 0]]" --gui`
-[2025-06-15T14:59:21Z INFO  machine_check_gui::backend::window] GUI window opened
+[2025-08-25T18:01:14Z INFO  machine_check_gui::backend::window] GUI window opened
 ```
 
 A window like this should open:
@@ -109,8 +110,7 @@ appropriately. Self-loops are an exception to the rule.
 The property `AG![EF![value == 0]]` has been verified to hold, and you can inspect the subproperties to see if things match your intuition. Unfortunately,
 in this case, refinement did not really help us much. To see something where it would help, reset the verification and use the button to add a new 
 property (+) in the property bar. A dialog bar will pop up to enter a new property. You can also delete the selected non-inherent property by pressing
-the remove-property button (-). Let's add a property `EG![value == 0]`, i.e. there exists a sequence of inputs
-in which the value stays zero:
+the remove-property button (-). Let's add a property `EG![value == 0]`, i.e. there exists a sequence of inputs in which the value stays zero:
 <a href="../images/gui_7.png"><img src="../images/gui_7.png" style="width:100%; margin: 1.5em; margin-left: auto; margin-right: auto; display:block"></a>
 
 The property will be added to the end of the property bar, select it so it will be verified:
@@ -162,6 +162,6 @@ The state space has become only slightly larger due to the field `irrelevant` be
 <a href="../images/gui_10.png"><img src="../images/gui_10.png" style="width:100%; margin: 1.5em; margin-left: auto; margin-right: auto; display:block"></a>
 
 >
-> &#x1F6E0;&#xFE0F; The Graphical User Interface is completely new in **machine-check** 0.4, so there will be some wonkiness. 
+> &#x1F6E0;&#xFE0F; The Graphical User Interface has been added **machine-check** 0.4, and there is still a lot of wonkiness.
 > As with other parts of **machine-check**, further development is planned.
 >

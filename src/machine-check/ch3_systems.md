@@ -18,37 +18,35 @@ mod machine_module {
         increment_value: Bitvector<1>,
     }
 
-    impl ::machine_check::Input for Input {}
+    #[derive(Clone, PartialEq, Eq, Hash, Debug)]
+    pub struct Param {}
 
     #[derive(Clone, PartialEq, Eq, Hash, Debug)]
     pub struct State {
         value: Bitvector<4>,
     }
 
-    impl ::machine_check::State for State {}
-
     #[derive(Clone, PartialEq, Eq, Hash, Debug)]
     pub struct System {}
 
     impl ::machine_check::Machine for System {
         type Input = Input;
+        type Param = Param;
         type State = State;
 
-        fn init(&self, _input: &Input) -> State {
+        fn init(&self, _input: &Input, _param: &Param) -> State {
             State {
                 value: Bitvector::<4>::new(0),
             }
         }
 
-        fn next(&self, state: &State, input: &Input) -> State {
+        fn next(&self, state: &State, input: &Input, _param: &Param) -> State {
             let mut next_value = state.value;
             if input.increment_value == Bitvector::<1>::new(1) {
                 next_value = next_value + Bitvector::<4>::new(1);
             }
 
-            State {
-                value: next_value,
-            }
+            State { value: next_value }
         }
     }
 }
@@ -59,7 +57,7 @@ fn main() {
 }
 ```
 
-That is a lot of code. Fortunately, most of it is just boilerplate around the contents of the `Input` and `State` structures and `init` and `next` functions which define a Finite State Machine. Let us unpack it bit by bit. Do not worry if you do not understand everything.
+That is a lot of code. Fortunately, most of it just boils to the `Input`, `Param`, and `State` structures, and `init` and `next` functions which define a Finite State Machine. Let us unpack it bit by bit. Do not worry if you do not understand everything.
 
 To enable formal verification of properties of digital systems using more intelligent means than brute-force computation, **machine-check**  transforms them in a Rust macro which is called by placing an attribute `#[machine_check::machine_description]` on an inner module, in this case called `machine_module`. The code that goes through the macro is enriched with verification analogues for fast verification. As the macro only supports a small subset of Rust code, it will produce a (hopefully useful) error if it does not understand something. However, you can still write any Rust code you want outside the module.
 
@@ -74,13 +72,16 @@ Onto the more interesting part, the structure input:
     }
 ```
 
-This defines how the input of the Finite-State Machine (FSM) looks like. Do not worry about the `derive` line; this is needed simply to ensure that it is sensible to manipulate using `machine-check`. We define a structure `Input` that has exactly one field `increment_value` of type `Bitvector<1>`. [Bitvector](https://docs.rs/machine-check/0.5.0/machine_check/struct.Bitvector.html) is a type provided by `machine-check` that has no signedness information and wrapping arithmetic operations. The number in angled brackets determines the bit-width, i.e. `increment-value` has only a single bit. So, basically, the input of the FSM is just a single bit. The next line is:
+This defines how the input of the Finite-State Machine (FSM) looks like. Do not worry about the `derive` line; this is needed simply to ensure that it is sensible to manipulate using `machine-check`. We define a structure `Input` that has exactly one field `increment_value` of type `Bitvector<1>`. [Bitvector](https://docs.rs/machine-check/0.6.0/machine_check/struct.Bitvector.html) is a type provided by `machine-check` that has no signedness information and wrapping arithmetic operations. The number in angled brackets determines the bit-width, i.e. `increment-value` has only a single bit. So, basically, the input of the FSM is just a single bit. The next lines are:
 
 ```rust
-    impl ::machine_check::Input for Input {}
+    #[derive(Clone, PartialEq, Eq, Hash, Debug)]
+    pub struct Param {}
 ```
 
-This just states that our input structure can be used as an input to `machine-check` machines. Do not worry about it. The state structure is more interesting:
+This defines the parameters of the system, which syntactically behave similarly to the inputs but have a special meaning for verification. For simplicity, we will not use parameters in this chapter, and [describe them in a later chapter](../advanced/adv1_parametric_systems.md). This means we just leave the `Param` structure empty to get a non-parametric system.
+
+The state structure is more interesting:
 
 ```rust
    #[derive(Clone, PartialEq, Eq, Hash, Debug)]
@@ -100,15 +101,16 @@ There is just one field `value` in the state, a four bits wide bit-vector. What'
 
     impl ::machine_check::Machine for System {
         type Input = Input;
+        type Param = Param;
         type State = State;
 
-        fn init(&self, _input: &Input) -> State {
+        fn init(&self, _input: &Input, _param: &Param) -> State {
             State {
                 value: Bitvector::<4>::new(0),
             }
         }
 
-        fn next(&self, state: &State, input: &Input) -> State {
+        fn next(&self, state: &State, input: &Input, _param: &Param) -> State {
             let mut next_value = state.value;
             if input.increment_value == Bitvector::<1>::new(1) {
                 next_value = next_value + Bitvector::<4>::new(1);
@@ -125,20 +127,21 @@ This is where the fun begins. We define a structure `System` that has no fields 
 
 ```rust
         type Input = Input;
+        type Param = Param;
         type State = State;
 ```
 
-The type declarations say that the input type of the FSM (left-side `Input`) is the structure `Input` we defined previously. Similarly, the FSM state type is the structure `State`. To describe the FSM, we also need is a function that creates the initial states of the FSM and a function that transforms a state to a next state, and this is exactly what we have.
+The type declarations say that the input type of the FSM (left-side `Input`) is the structure `Input` we defined previously. Similarly, the FSM parameter type is the structure `Param` and the state type is the structure `State`. To describe the FSM, we also need is a function that creates the initial states of the FSM and a function that transforms a state to a next state, and this is exactly what we have.
 
 ```rust
-    fn init(&self, _input: &Input) -> State {
+    fn init(&self, _input: &Input, _param: &Param) -> State {
             State {
                 value: Bitvector::<4>::new(0),
             }
         }
 ```
 
-The init function takes the system structure (which has no fields in our case, so is quite useless in this situation) and an input, creating an initial machine state based on that. Our init function just creates a state where `value` is a four-bit bit-vector with the value zero.
+The init function takes the system structure (which has no fields in our case, so is quite useless in this situation), the input, and the parameter, creating an initial machine state based on that. Our init function just creates a state where `value` is a four-bit bit-vector with the value zero.
 
 >
 > &#x1F6E0;&#xFE0F; Currently, the initialisation function also takes the input structure as an argument, possibly creating multiple initial states. This will most likely change in the future when parametric systems are implemented.
@@ -148,7 +151,7 @@ The state function is a bit more interesting:
 
 ```rust
 
-        fn next(&self, state: &State, input: &Input) -> State {
+        fn next(&self, state: &State, input: &Input, _param: &Param) -> State {
             let mut next_value = state.value;
             if input.increment_value == Bitvector::<1>::new(1) {
                 next_value = next_value + Bitvector::<4>::new(1);

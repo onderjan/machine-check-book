@@ -26,8 +26,10 @@ number = digit, {digit} | "-", digit, {digit} | "0x", hex_digit, {hex_digit};
 equality_operator = "==" | "!=";
 comparison_operator = "==" | "!=" | "<" | "<=" | ">" | ">=";
 ident = letter, { letter, digit, "_" };
-macro = "AX!" | "EX!" | "AG!" | "EG!" | "AF!" | "EF!" 
-        | "AU!" | "EU!" | "AR!" | "ER!"; 
+ctl_macro = "AX!" | "EX!" | "AG!" | "EG!" | "AF!" | "EF!" 
+        | "AU!" | "EU!" | "AR!" | "ER!";
+mu_calculus_macro = "lfp!" | "gfp!";
+mu_calculus_variable = ident;
 
 indexing = "[", number, "]";
 left_side = ident, [indexing],
@@ -37,7 +39,9 @@ atomic_property = left_side, equality_operator, number |
 negation = "!", "(", property, ")";
 property_part = atomic_property 
         | negation 
-        | macro, "[", property, {",", property} , "]";
+        | ctl_macro, "[", property, {",", property} , "]"
+        | mu_calculus_macro, "[", ident, ",", property "]"
+        | mu_calculus_variable;
 property = property_part, {"&&", property_part} 
         | property_part, {"||", property_part};
 ```

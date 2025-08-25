@@ -70,21 +70,23 @@ We can use **machine-check-avr** to find a verify a property in the compiled mac
 ```console
 cargo install machine-check-avr
     Updating crates.io index
-  Downloaded machine-check-avr v0.5.0
-  Downloaded 1 crate (42.8 KB) in 1.03s
-  Installing machine-check-avr v0.5.0
+  Installing machine-check-avr v0.6.0
     Updating crates.io index
-     Locking 74 packages to latest compatible versions
-   Compiling proc-macro2 v1.0.95
+     Locking 97 packages to latest compatible versions
    (...)
-    Finished `release` profile [optimized] target(s) in 2m 12s
-  Installing (...)\.cargo\bin\machine-check-avr.exe
-   Installed package `machine-check-avr v0.5.0` (executable `machine-check-avr.exe`)
+   Compiling machine-check-avr v0.6.0
+    Finished `release` profile [optimized] target(s) in 2m 13s
+warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+  Installing C:\Users\Mallory\.cargo\bin\machine-check-avr.exe
+   Installed package `machine-check-avr v0.6.0-alpha.2` (executable `machine-check-avr.exe`)
 ```
 
 >
-> &#x26A0;&#xFE0F; Even with a Ryzen 9950X3D CPU, the compilation takes more than 2 minutes, and will take more (3-10 minutes) with a less powerful CPU. The most time is taken compiling `machine-check-avr` itself (which is essentially a single-core task) due to a high amount of auto-generated code.
+> &#x26A0;&#xFE0F; Even with a Ryzen 9950X3D CPU, the compilation takes more than 2 minutes, and will take more (3-10 minutes) with a less powerful CPU. The most time is taken compiling `machine-check-avr` itself (which is essentially a single-core task) due to a high amount of auto-generated code. 
 > Fortunately, it is then possible to use `machine-check-avr` normally without recompilation (unless you wish to reinstall it with other features, such as GUI support).
+>
+> It is planned to tackle this problem in the next version together with the compilation time.
 >
 
 The [Intel HEX](https://en.wikipedia.org/wiki/Intel_HEX) file obtained via compilation (that we can use to program the ATmega328P or provide to **machine-check-avr**) is not very self-explanatory (let us call it `calibration_original.hex`):
@@ -108,11 +110,11 @@ The [Intel HEX](https://en.wikipedia.org/wiki/Intel_HEX) file obtained via compi
 We can try to verify the property, which we think should hold:
 ```console
 $ machine-check-avr --system-hex-file (...)\calibration_original.hex --property "AG![EF![PORTD == 0]]"
-[2025-06-15T15:16:52Z INFO  machine_check] Starting verification.
-[2025-06-15T15:16:52Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-06-15T15:17:07Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-06-15T15:17:07Z INFO  machine_check::verify] Verifying the given property.
-[2025-06-15T15:17:07Z INFO  machine_check] Verification ended.
+[2025-08-25T18:28:18Z INFO  machine_check] Starting verification.
+[2025-08-25T18:28:18Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-08-25T18:28:31Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-08-25T18:28:31Z INFO  machine_check::verify] Verifying the given property.
+[2025-08-25T18:28:32Z INFO  machine_check] Verification ended.
 +----------------------------------+
 |      Result: DOES NOT HOLD       |
 +----------------------------------+
@@ -163,11 +165,11 @@ We'll verify that the property now holds:
 
 ```console
 $ machine-check-avr --system-hex-file (...)\calibration_fixed.hex --property "AG![EF![PORTD == 0]]"   
-[2025-06-15T15:17:56Z INFO  machine_check] Starting verification.
-[2025-06-15T15:17:56Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-06-15T15:18:10Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-06-15T15:18:10Z INFO  machine_check::verify] Verifying the given property.
-[2025-06-15T15:18:10Z INFO  machine_check] Verification ended.
+[2025-08-25T18:29:26Z INFO  machine_check] Starting verification.
+[2025-08-25T18:29:26Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-08-25T18:29:40Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-08-25T18:29:40Z INFO  machine_check::verify] Verifying the given property.
+[2025-08-25T18:29:40Z INFO  machine_check] Verification ended.
 +----------------------------------+
 |          Result: HOLDS           |
 +----------------------------------+
@@ -193,5 +195,5 @@ $ cargo uninstall machine-check-avr
 >
 > &#x1F6E0;&#xFE0F; Currently, the ease of use of **machine-check-avr** leaves something to be desired: for example, if we want to verify a property depending on some line in the program source code, we have to obtain the mapping of the source-code line to the the value of the Program Counter (`PC`) ourselves. In the future, **machine-check-avr** could be extended to obtain this information automatically from a file with debug information.
 >
-> &#x26A0;&#xFE0F; It is possible that due to the large amount of generated code, Rust will overflow its stack while optimising `machine-check-avr`, especially when compiling in debug mode. In that case, set the environment variable `RUST_MIN_STACK=4194304`. [See also this Rust issue](https://github.com/rust-lang/rust/issues/93908).
+> &#x26A0;&#xFE0F; It is possible that due to the large amount of generated code, Rust will overflow its stack while optimising `machine-check-avr`, especially when compiling in debug mode. In that case, set the environment variable `RUST_MIN_STACK=4194304`. [See also this Rust issue](https://github.com/rust-lang/rust/issues/93908). It is planned to tackle this problem in the next version together with the compilation time.
 >

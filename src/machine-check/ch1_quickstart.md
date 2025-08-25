@@ -41,7 +41,7 @@ In your `Cargo.toml`, add the following dependency:
 
 ```toml
 [dependencies]
-machine-check = "0.5.0"
+machine-check = "0.6.0"
 ```
 
 You can start using **machine-check** in Rust now. Let's create a minimal somewhat interesting system to verify. Put this in your `src/main.rs`:
@@ -62,37 +62,35 @@ mod machine_module {
         increment_value: Bitvector<1>,
     }
 
-    impl ::machine_check::Input for Input {}
+    #[derive(Clone, PartialEq, Eq, Hash, Debug)]
+    pub struct Param {}
 
     #[derive(Clone, PartialEq, Eq, Hash, Debug)]
     pub struct State {
         value: Bitvector<4>,
     }
 
-    impl ::machine_check::State for State {}
-
     #[derive(Clone, PartialEq, Eq, Hash, Debug)]
     pub struct System {}
 
     impl ::machine_check::Machine for System {
         type Input = Input;
+        type Param = Param;
         type State = State;
 
-        fn init(&self, _input: &Input) -> State {
+        fn init(&self, _input: &Input, _param: &Param) -> State {
             State {
                 value: Bitvector::<4>::new(0),
             }
         }
 
-        fn next(&self, state: &State, input: &Input) -> State {
+        fn next(&self, state: &State, input: &Input, _param: &Param) -> State {
             let mut next_value = state.value;
             if input.increment_value == Bitvector::<1>::new(1) {
                 next_value = next_value + Bitvector::<4>::new(1);
             }
 
-            State {
-                value: next_value,
-            }
+            State { value: next_value }
         }
     }
 }
@@ -110,13 +108,16 @@ That is a lot of code. Fortunately, most of it is just boilerplate around the co
 Currently, **machine-check** can verify [Computation Tree Logic](http://en.wikipedia.org/wiki/Computation_tree_logic) properties of the systems. For example, we can determine that from every reachable state of the system, we can, through some sequence of inputs, get to a state where `value` is zero:
 ```console
 $ cargo run -- --property 'AG![EF![value == 0]]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
+   Compiling hello-machine-check v0.1.0 (C:\Users\Mallory\rust\machine-check-book\hello-machine-check)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.36s
+warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
      Running `target\debug\hello-machine-check.exe --property "AG![EF![value == 0]]"`
-[2025-06-15T13:56:51Z INFO  machine_check] Starting verification.
-[2025-06-15T13:56:51Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-06-15T13:56:51Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-06-15T13:56:51Z INFO  machine_check::verify] Verifying the given property.
-[2025-06-15T13:56:51Z INFO  machine_check] Verification ended.
+[2025-08-25T17:23:24Z INFO  machine_check] Starting verification.
+[2025-08-25T17:23:24Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-08-25T17:23:24Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-08-25T17:23:24Z INFO  machine_check::verify] Verifying the given property.
+[2025-08-25T17:23:24Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -128,5 +129,12 @@ $ cargo run -- --property 'AG![EF![value == 0]]'
 +-------------------------------+
 ```
 
+**Machine-check** was able to quickly verify that the supplied property holds.
+
+>
+> &#x1F6E0;&#xFE0F; You can safely ignore the warning about the package `partitions`, which is currently internally used by **machine-check**. This warning should be rectified in the next release.
+>
+
 While the example system under verification is very simple, **machine-check** integrates advanced techniques that make verification of more complex systems possible, such as ones combining a processor and a machine-code program. In the following chapters, we will discuss [the properties that can be verified](./ch2_properties.md), [the system descriptions](./ch3_systems.md), [the Command-line Interface](./ch4_cli.md), and [the Graphical User Interface](./ch5_gui.md) that can be used to understand the results of verification or the reasons for the inability to feasibly verify a property against a system.
+
 
