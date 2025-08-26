@@ -105,7 +105,7 @@ That is a lot of code. Fortunately, most of it is just boilerplate around the co
 
 ## Verifying
 
-Currently, **machine-check** can verify [Computation Tree Logic](http://en.wikipedia.org/wiki/Computation_tree_logic) properties of the systems. For example, we can determine that from every reachable state of the system, we can, through some sequence of inputs, get to a state where `value` is zero:
+**Machine-check** can verify properties in [propositional μ-calculus](https://en.wikipedia.org/wiki/Modal_%CE%BC-calculus). For simplicity, we will discuss verifying [Computation Tree Logic](http://en.wikipedia.org/wiki/Computation_tree_logic) (CTL) properties in the main part of the book and discuss the μ-calculus [in an advanced chapter](../advanced/adv2_mu_calculus.md). For example, using a CTL property, we can determine that from every reachable state of the system, we can, through some sequence of inputs, get to a state where `value` is zero:
 ```console
 $ cargo run -- --property 'AG![EF![value == 0]]'
    Compiling hello-machine-check v0.1.0 ((...)\hello-machine-check)
