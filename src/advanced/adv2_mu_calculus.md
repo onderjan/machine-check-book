@@ -1,6 +1,10 @@
 # μ-calculus Properties
 
-While the Computation Tree Logic is relatively simple to use, there are interesting properties that cannot be expressed using it. Starting with version 0.6.0, **machine-check** supports a much more powerful temporal logic: [propositional (also called modal) μ-calculus](https://en.wikipedia.org/wiki/Modal_%CE%BC-calculus). In fact, even the CTL properties are internally translated to μ-calculus before they are used for model checking, and the only thing needed to unlock the power of μ-calculus are two new macro-style operators.
+While the Computation Tree Logic is relatively simple to use, there are interesting properties that cannot be expressed using it. **Machine-check** supports a much more powerful temporal logic: [propositional (also called modal) μ-calculus](https://en.wikipedia.org/wiki/Modal_%CE%BC-calculus). In fact, even the CTL properties are internally translated to μ-calculus before they are used for model checking, and the only thing needed to unlock the power of μ-calculus are two new macro-style operators.
+
+>
+>  &#x1F6E0;&#xFE0F; Support for non-CTL properties has been added in version 0.6.0. There were some issues with the new μ-calculus verification engine, and the **infinitely often** example used the wrong translation of **FG** to μ-calculus. This [has been fixed](https://machine-check.org/blog/04-v0-6-1/) in version 0.6.1 of **machine-check** and this book.
+>
 
 ## Local Reasoning
 
@@ -36,7 +40,7 @@ Note how the `E`/`A` path quantifier only affects the choice of `EX!`/`AX!`, whi
 
 ## Example: Holds in Even Positions
 
-The example [mu_even](https://docs.rs/crate/machine-check/0.6.0/source/examples/mu_even.rs) in **machine-check** demonstrates a system with an interesting property not expressible in Computation Tree Logic, nor the related Linear Tree Logic and CTL*: a property holding at even time instants. The value is computed as follows:
+The example [mu_even](https://docs.rs/crate/machine-check/0.6.1/source/examples/mu_even.rs) in **machine-check** demonstrates a system with an interesting property not expressible in Computation Tree Logic, nor the related Linear Tree Logic and CTL*: a property holding at even time instants. The value is computed as follows:
 
 ```rust
 (...)
@@ -55,15 +59,15 @@ We want to know if the value is definitely zero in even time instants, while it 
 
 ```console
 $ cargo run -- --property 'gfp![Z, value == 0 && AX![AX![Z]]]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.31s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
 note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
      Running `target\debug\hello-machine-check.exe --property "gfp![Z, value == 0 && AX![AX![Z]]]"`
-[2025-08-25T22:38:44Z INFO  machine_check] Starting verification.
-[2025-08-25T22:38:44Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T22:38:44Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T22:38:44Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T22:38:44Z INFO  machine_check] Verification ended.
+[2025-09-14T17:14:49Z INFO  machine_check] Starting verification.
+[2025-09-14T17:14:49Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-09-14T17:14:49Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-09-14T17:14:49Z INFO  machine_check::verify] Verifying the given property.
+[2025-09-14T17:14:49Z INFO  machine_check] Verification ended.
 +------------------------------+
 |        Result: HOLDS         |
 +------------------------------+
@@ -79,57 +83,57 @@ Variations of the local reasoning could be used to construct other properties of
 
 ## Example: Infinitely Often
 
-The example [mu_infinitely_often](https://docs.rs/crate/machine-check/0.6.0/source/examples/mu_infinitely_often.rs) demonstrates the ability of the μ-calculus to verify a property that cannot be expressed in Computation Tree Logic, but can be in Linear Time Logic: that something happens *infinitely often*. This can be expressed as **FG** in LTL. The similar property **AFAG** in CTL describes a different concept, that something happens *eventually forever*. The example gives the standard system that reveals the difference between the two: in state 0 where *p* holds, we have a choice between looping and going to state 1 where *p* does not hold. From state 1, the only possible transition is to state 2 where *p* holds again, and where the system loops forever.
+The example [mu_infinitely_often](https://docs.rs/crate/machine-check/0.6.1/source/examples/mu_infinitely_often.rs) demonstrates the ability of the μ-calculus to verify a property that cannot be expressed in Computation Tree Logic, but can be in Linear Time Logic: that something happens *infinitely often*. This can be expressed as **FG** in LTL. The similar property **AFAG** in CTL describes a different concept, that something happens *eventually forever*. The example gives the standard system that reveals the difference between the two: in state 0 where *p* holds, we have a choice between looping and going to state 1 where *p* does not hold. From state 1, the only possible transition is to state 2 where *p* holds again, and where the system loops forever.
 
 Let us first verify the CTL property *eventually forever*:
 
 ```console
-cargo run -- --property 'AF![AG![p == 1]]'
+$ cargo run -- --property 'AF![AG![p == 1]]'
    Compiling hello-machine-check v0.1.0 (C:\Users\Mallory\rust\machine-check-book\hello-machine-check)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.81s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 13.07s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
 note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
      Running `target\debug\hello-machine-check.exe --property "AF![AG![p == 1]]"`
-[2025-08-25T22:53:34Z INFO  machine_check] Starting verification.
-[2025-08-25T22:53:34Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T22:53:34Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T22:53:34Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T22:53:34Z INFO  machine_check] Verification ended.
-+-------------------------------+
-|     Result: DOES NOT HOLD     |
-+-------------------------------+
-|  Refinements:              2  |
-|  Generated states:        10  |
-|  Final states:             4  |
-|  Generated transitions:   12  |
-|  Final transitions:        7  |
-+-------------------------------+
+[2025-09-14T18:25:25Z INFO  machine_check] Starting verification.
+[2025-09-14T18:25:25Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-09-14T18:25:25Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-09-14T18:25:25Z INFO  machine_check::verify] Verifying the given property.
+[2025-09-14T18:25:25Z INFO  machine_check] Verification ended.
++------------------------------+
+|    Result: DOES NOT HOLD     |
++------------------------------+
+|  Refinements:             1  |
+|  Generated states:        8  |
+|  Final states:            3  |
+|  Generated transitions:   9  |
+|  Final transitions:       5  |
++------------------------------+
 ```
 
 This does not hold. The problem is that while we are looping in state 0, we are threatened by the possibility of going to the state 1, where *p* does not hold.
 
-The property *infinitely often* allows us to suspend our disbelief for the moment we will be in the state 1. The translation of the property from LTL to μ-calculus is non-trivial but well-known, `gfp![Y, lfp![X, (p == 1 && EX![Y]) || EX![X]]]`. Verifying with **machine-check**:
+The property *infinitely often* allows us to suspend our disbelief for the moment we will be in the state 1. The translation of the property from LTL to μ-calculus is non-trivial but well-known, `'lfp![X,gfp![Y, AX![X] || (p == 1 && AX![Y])]]'`. Verifying with **machine-check**:
 
 ```console
-cargo run -- --property 'gfp![Y, lfp![X, (p == 1 && EX![Y]) || EX![X]]]'
+$ cargo run -- --property 'lfp![X,gfp![Y, AX![X] || (p == 1 && AX![Y])]]'
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.11s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
 note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
-     Running `target\debug\hello-machine-check.exe --property "gfp![Y, lfp![X, (p == 1 && EX![Y]) || EX![X]]]"`
-[2025-08-25T22:58:35Z INFO  machine_check] Starting verification.
-[2025-08-25T22:58:35Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T22:58:35Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T22:58:35Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T22:58:35Z INFO  machine_check] Verification ended.
-+-------------------------------+
-|         Result: HOLDS         |
-+-------------------------------+
-|  Refinements:              2  |
-|  Generated states:        10  |
-|  Final states:             4  |
-|  Generated transitions:   12  |
-|  Final transitions:        7  |
-+-------------------------------+
+     Running `target\debug\hello-machine-check.exe --property "lfp![X,gfp![Y, AX![X] || (p == 1 && AX![Y])]]"`
+[2025-09-14T17:07:58Z INFO  machine_check] Starting verification.
+[2025-09-14T17:07:58Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-09-14T17:07:58Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-09-14T17:07:58Z INFO  machine_check::verify] Verifying the given property.
+[2025-09-14T17:07:58Z INFO  machine_check] Verification ended.
++------------------------------+
+|        Result: HOLDS         |
++------------------------------+
+|  Refinements:             1  |
+|  Generated states:        8  |
+|  Final states:            3  |
+|  Generated transitions:   9  |
+|  Final transitions:       5  |
++------------------------------+
 ```
 
 As such, *p* holds *infinitely often* but not *eventually forever* in this system.

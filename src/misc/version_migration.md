@@ -2,7 +2,7 @@
 
 This page details the steps necessary to migrate the systems and properties to new versions of **machine-check**, starting from version 0.4.0.
 
-## 0.5.0 → 0.6.0
+## 0.5.0 → 0.6.1
 
 The properties now [support μ-calculus](../advanced/adv2_mu_calculus.md), but the properties from version 0.5.0 
 can be used as-is without any changes. The systems must be modified as follows.
@@ -15,7 +15,7 @@ The `machine_check::Input` and `machine_check::State` traits are now blanket-imp
     impl ::machine_check::State for State {}
 ```
 
-Parameters were added in version 0.6.0 to support [parametric systems](../advanced/adv1_parametric_systems.md).
+Parameters have been added to support [parametric systems](../advanced/adv1_parametric_systems.md).
 For a non-parametric system (behaving as previously), add the following structure into the machine module:
 
 ```rust
@@ -43,7 +43,7 @@ Then, for the `machine_check::Machine` implementation, apply the changes as writ
     }
 ```
 
-
+Note that version 0.6.0 [contained bugs that were fixed]((https://machine-check.org/blog/04-v0-6-1/)) in version 0.6.1.
 
 ## 0.4.0 → 0.5.0
 

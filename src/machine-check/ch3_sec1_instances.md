@@ -149,7 +149,7 @@ note: to see what the problems were, use the option `--future-incompat-report`, 
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
 Write the maximum system value: 20
 
-thread 'main' panicked at (...)\mck-0.6.0\src\bitvector\concr\support.rs:68:13:
+thread 'main' panicked at (...)\mck-0.6.1\src\bitvector\concr\support.rs:68:13:
 Machine bitvector value 20 does not fit into 4 bits
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 error: process didn't exit successfully: `target\debug\hello-machine-check.exe --property "EF![value == 10]"` (exit code: 101)
