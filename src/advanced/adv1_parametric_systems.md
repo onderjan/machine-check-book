@@ -121,7 +121,73 @@ No matter the `max_value`, we can always take the path where the state value is 
 It is also possible to use the parameters in the next state computation function: in that case, each time instant has its own "fresh" parameter argument independent of others instead of the single unchanging `max_value` in the example, essentially producing an infinite number of systems fulfilling the description.
 
 >
-> &#x1F6E0;&#xFE0F; The ability to verify with parameters has been added in version 0.6.0 and is somewhat experimental.
-> While the abstraction-refinement framework used by **machine-check** is used even for abstracting and refining parameters, uses such as the above example are currently not a very good fit due to the current absence of relational domains.
+> &#x1F6E0;&#xFE0F; The ability to verify with parameters is currently somewhat experimental.
+> While the abstraction-refinement framework used by **machine-check** is used even for abstracting and refining parameters, uses such as the above example are currently not a very good fit due to the current absence of relational domains more powerful than equality.
 >
 
+# System Hierarchy Checking
+
+We can also use parametric systems with a different thought process. Consider that you are given a specification in form of a system which has some unspecified parts, and an implementation that should "fill the spots" while retaining the behaviours of the specification system. Then, you can actually think of the specification system as a system that is parametrised by variables determining the unspecified values.
+
+Let's look at the simple [system hierarchy example](https://docs.rs/crate/machine-check/0.7.0/source/examples/parametric.rs) for **machine-check**, where a specification of a system performing an unsigned division of two numbers says that the result of division by zero must be either 0 (as in e.g. some AVR processors) or the unsigned maximum (as in e.g. RISC-V), but leaves the implementation free to choose one of them. The specification result is represented by `specified_value`, the implementation result as `impl_value`, and the relevant computation is as follows (`param.unspecified` is a signed single-bit parameter, which will be extended either to 0 or -1, i.e. the maximum unsigned value):
+
+```rust
+            if input.divisor != Unsigned::<4>::new(0) {
+                specified_value = input.dividend / input.divisor;
+                impl_value = input.dividend / input.divisor;
+            } else {
+                specified_value = Into::<Unsigned<4>>::into(Ext::<4>::ext(param.unspecified));
+                impl_value = self.division_by_zero_result;
+            }
+```
+
+Running the example normally (add import `clap = { version = "4.4.6", features = ["derive"] }` to your Cargo.toml if you are going to copy the example to your package), the default system implementation has `self.division_by_zero_result` set to 0. Running to check that the values will be the same, we get:
+
+```console
+cargo run -- --property 'AG![specified_value == impl_value]'
+(...)
+[2025-10-28T18:41:16Z INFO  machine_check] Starting verification.
+[2025-10-28T18:41:16Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T18:41:16Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T18:41:16Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T18:41:16Z INFO  machine_check] Verification ended.
++-----------------------------------+
+|   Result: DEPENDS ON PARAMETERS   |
++-----------------------------------+
+|  Refinements:                  9  |
+|  Generated states:            44  |
+|  Final states:                17  |
+|  Generated transitions:     1057  |
+|  Final transitions:           34  |
++-----------------------------------+
+```
+
+This actually makes sense in the context: if the parameter (unspecified value) is 0, then the implementation and specification system with that parameter are the same. If not, they are different. As such, the specification system is hierarchically "above" the implementation. On the other hand, we can pass the parameter `--system-wrong-div-by-zero` to force the division-by-zero result to 1, which is not allowed:
+
+```console
+
+ cargo run -- --property 'AG![specified_value == impl_value]' --system-wrong-div-by-zero
+ (...)
+[2025-10-28T18:44:30Z INFO  machine_check] Starting verification.
+[2025-10-28T18:44:30Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T18:44:30Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T18:44:30Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T18:44:30Z INFO  machine_check] Verification ended.
++-------------------------------+
+|     Result: DOES NOT HOLD     |
++-------------------------------+
+|  Refinements:              5  |
+|  Generated states:        14  |
+|  Final states:             6  |
+|  Generated transitions:   71  |
+|  Final transitions:       12  |
++-------------------------------+
+
+```
+
+This says that there is no valuation of the parameters such that the implementation would correspond to the specification system. As such, we learned that the implementation hierarchically has no relation with the specification, which violates our expectations.
+
+
+>
+> &#x1F6E0;&#xFE0F; Checking the hierarchical relationship of two parametric systems is currently not supported.
+>

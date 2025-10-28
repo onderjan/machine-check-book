@@ -8,8 +8,8 @@ The abstraction technique used is *existential abstraction*, where we represent 
 concrete possibilities. In **machine-check**, it is guaranteed at least one of these possibilities definitely exists.
 
 For abstraction, **machine-check** currently uses the three-valued bit-vector (TVBV) domain, already seen in the [chapter on GUI](ch5_gui.md). This can be 
-combined with an experimental *dual-interval* domain using machine-check feature `Zdual_interval`. This feature is also available in the systems provided
-in the next chapters.
+combined with experimental *dual-interval* and *equality* domains using machine-check features `Zdual_interval` and `Zeq_domain`, respectively. These features 
+are also available in the systems provided in the next chapters.
 
 ## Three-valued Bit-vector Domain
 
@@ -43,23 +43,82 @@ where the possibilities range from 3 to 9, [3,9] will be shown instead of [3,7] 
 
 While the dual-interval domain is not particularly useful for bitwise operations, it can precisely track arithmetic bounds. 
 
-
 >
 > &#x1F6E0;&#xFE0F; The increased precision brought by the dual-interval domain can lead to larger state spaces and longer verification times, 
 > which currently tends to be the case for most used test cases when the domain is used. 
-> Therefore, it is currently disabled by default until more clever strategies for state space generation and refinement are introduced.
+> Therefore, it is currently disabled by default until more clever strategies for state space generation and refinement are introduced that take it into account.
 >
-
 
 ## Combining the Domains
 
 Both domains are used together when the `Zdual_interval` feature flag is used. This leads to bit-vector variables having values such as 
- - `"00001000" ⊓ 8` (where only one value is possible),
- - `"0000000100XXXX" ⊓ [71, 72]` (where there exists a single unsigned interval),
- - `"XXXXXXXX" ⊓ ([0, 126] ∪ [152, 255])` (where there exist two intervals with different sign bit, which do not combine to a single unsigned interval).
+ - `"00001000" ∩ 8` (where only one value is possible),
+ - `"0000000100XXXX" ∩ [71, 72]` (where there exists a single unsigned interval),
+ - `"XXXXXXXX" ∩ ([0, 126] ∪ [152, 255])` (where there exist two intervals with different sign bit, which do not combine to a single unsigned interval).
 
-The symbol ⊓ stands for a *join* operation between the two domains. In essence, only the values admitted by **both** domains are possible. For example,
-`"0000000100XXXX" ⊓ [71, 72]` admits only the possibilities 71 and 72.
+Only the values admitted by **both** domains are possible. For example, `"0000000100XXXX" ∩ [71, 72]` admits only the possibilities 71 and 72.
+
+## Equality Domain
+
+Also implemented is the equality domain, which tracks that two variables are equal to each other. It is an example of *relational domains*, which do not track
+just the values of one variable, but the relationships between more variables that limit the values.
+
+The idea behind the implementation is to number variables such as input and parameters, and track the number through operations where the actual value does
+not change. This can allow us to determine other values as well. Let's illustrate this by the [exclusive OR example](https://docs.rs/crate/machine-check/0.7.0/source/examples/parametric.rs).
+In the example, an input is copied to two distinct state variables, which are combined by an exclusive OR in the next state. We know that an exclusive OR
+of the same values produces a zero and the values are the same, but **machine-check** must refine down to single values by default, a worst-case scenario:
+
+```console
+
+cargo run --release -- --property 'AG![xor_value == 0]' 
+(...)
+[2025-10-28T19:21:59Z INFO  machine_check] Starting verification.
+[2025-10-28T19:21:59Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T19:21:59Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T19:21:59Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T19:22:07Z INFO  machine_check] Verification ended.
++---------------------------------+
+|          Result: HOLDS          |
++---------------------------------+
+|  Refinements:              384  |
+|  Generated states:         687  |
+|  Final states:              64  |
+|  Generated transitions:   8367  |
+|  Final transitions:       4097  |
++---------------------------------+
+
+```
+
+However, the equality domain lets **machine-check** use the same reasoning as we just used, making the verification trivial:
+
+```console
+
+cargo run --features machine-check/Zeq_domain -- --property 'AG![xor_value == 0]' 
+(...)
+[2025-10-28T19:25:38Z INFO  machine_check] Starting verification.
+[2025-10-28T19:25:38Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T19:25:38Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T19:25:38Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T19:25:38Z INFO  machine_check] Verification ended.
++------------------------------+
+|        Result: HOLDS         |
++------------------------------+
+|  Refinements:             0  |
+|  Generated states:        3  |
+|  Final states:            2  |
+|  Generated transitions:   3  |
+|  Final transitions:       3  |
++------------------------------+
+
+```
+
+In the GUI, the values of the two values and result are `"XXXXXX" ∩ Eq(#0)`, `"XXXXXX" ∩ Eq(#0)`, and `"000000"`, respectively. The part `Eq(#0)` is an equality constraint that says the
+variable is equal to a variable with tracking number `#0`. Within the equality domain, it is known that performing an exclusive OR of two variables with the same tracking number is equal
+to zero, which makes verification of the example trivial.
+
+It is also possible to use all three supported domains (three-valued bit-vector, dual-interval, equality) by enabling both features at the same time.
 
 
- 
+>
+> &#x1F6E0;&#xFE0F; The equality domain is currently disabled by default until more clever strategies for state space generation and refinement are introduced that take it into account.
+>

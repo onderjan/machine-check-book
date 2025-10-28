@@ -2,9 +2,6 @@
 
 While the Computation Tree Logic is relatively simple to use, there are interesting properties that cannot be expressed using it. **Machine-check** supports a much more powerful temporal logic: [propositional (also called modal) μ-calculus](https://en.wikipedia.org/wiki/Modal_%CE%BC-calculus). In fact, even the CTL properties are internally translated to μ-calculus before they are used for model checking, and the only thing needed to unlock the power of μ-calculus are two new macro-style operators.
 
->
->  &#x1F6E0;&#xFE0F; Support for non-CTL properties has been added in version 0.6.0. There were some issues with the new μ-calculus verification engine, and the **infinitely often** example used the wrong translation of **FG** to μ-calculus. This [has been fixed](https://machine-check.org/blog/04-v0-6-1/) in version 0.6.1 of **machine-check** and this book.
->
 
 ## Local Reasoning
 
@@ -138,3 +135,7 @@ note: to see what the problems were, use the option `--future-incompat-report`, 
 
 As such, *p* holds *infinitely often* but not *eventually forever* in this system.
 
+
+>
+> &#x26A0;&#xFE0F; While μ-calculus properties must be by definition monotone, this is not enforced by the current version of **machine-check** in favour of richness of properties, and it is possible to e.g. force the verification into an infinite loop by verifying `lfp![X,!X]`, which will toggle the values of the fixed-point variable between zero and one infinitely. Monotonicity can be trivially ensured by only using AND and OR to manipulate the variable within its fixed point, without any negations or other applied functions/operators.
+>

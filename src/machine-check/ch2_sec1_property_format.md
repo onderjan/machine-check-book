@@ -1,48 +1,25 @@
 # Property Format
 
-In this section, the format of properties will be introduced slightly more formally (but ignoring the precise details) using the [Extended Backus-Naur Form](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form). Whitespace is assumed to be stripped between tokens.
+The properties of **machine-check** are described in a subset of Rust expressions, augmented with temporal logic operators and some syntax sugar for easily expressing values.
+
+## Available Variables
+
+All fields of the struct `State` of the machine under verification are available to use just using their struct field names. Together, these variables represent the current state. The fields must be of **machine-check** types [Unsigned](https://docs.rs/machine-check/0.6.1/machine_check/struct.Unsigned.html) and [Signed](https://docs.rs/machine-check/0.6.1/machine_check/struct.Signed.html), [Bitvector](https://docs.rs/machine-check/0.6.1/machine_check/struct.Bitvector.html), or [BitvectorArray](https://docs.rs/machine-check/0.6.1/machine_check/struct.BitvectorArray.html).
 
 >
-> &#x1F6E0;&#xFE0F; The current property format is a placeholder to approximately emulate Rust syntax. This may change to a proper subset of Rust in the future.
->
-> The given EBNF form is only intended for understanding and may not be completely precise.
+> &#x1F6E0;&#xFE0F; Currently, the signedness of bit-vectors in the system is not known by the property, i.e. [Unsigned](https://docs.rs/machine-check/0.6.1/machine_check/struct.Unsigned.html) and [Signed](https://docs.rs/machine-check/0.6.1/machine_check/struct.Signed.html) fields of `State` are seen by the property as [Bitvector](https://docs.rs/machine-check/0.6.1/machine_check/struct.Bitvector.html) variables.
 >
 
-```ebnf
-letter = "A" | "B" | "C" | "D" | "E" | "F" | "G"
-       | "H" | "I" | "J" | "K" | "L" | "M" | "N"
-       | "O" | "P" | "Q" | "R" | "S" | "T" | "U"
-       | "V" | "W" | "X" | "Y" | "Z" | "a" | "b"
-       | "c" | "d" | "e" | "f" | "g" | "h" | "i"
-       | "j" | "k" | "l" | "m" | "n" | "o" | "p"
-       | "q" | "r" | "s" | "t" | "u" | "v" | "w"
-       | "x" | "y" | "z" ;
-digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
-hex_digit = digit | "A" | "B" | "C" | "D" | "E" | "F" | 
-        "a" | "b" | "c" | "d" | "e" | "f" ;
+## Standard Expressions and Syntax Sugar
 
-number = digit, {digit} | "-", digit, {digit} | "0x", hex_digit, {hex_digit};
+Standard Rust operators that are supported by the types of fields are also available in property expressions. This notably includes [BitvectorArray](https://docs.rs/machine-check/0.6.1/machine_check/struct.BitvectorArray.html) read (`array_field[bitvector_index]`) and short-circuiting AND (`&&`) and OR (`||`) for Booleans obtained from equality, comparison, or temporal logic operators.
 
-equality_operator = "==" | "!=";
-comparison_operator = "==" | "!=" | "<" | "<=" | ">" | ">=";
-ident = letter, { letter, digit, "_" };
-ctl_macro = "AX!" | "EX!" | "AG!" | "EG!" | "AF!" | "EF!" 
-        | "AU!" | "EU!" | "AR!" | "ER!";
-mu_calculus_macro = "lfp!" | "gfp!";
-mu_calculus_variable = ident;
+Also supported are constructor functions for the types. The functions must be used by their full paths. For example, `::machine_check::Unsigned::<8>::new(0) != ::machine_check::Unsigned::<8>::new(1)` is a valid type. Of course, this is a bit unwieldy, so literals in equalities/comparisons are coerced to the appropriate **machine-check** type if it is possible to infer that, e.g. `value == 0` is a valid property expression if `value` is a bitvector field.
 
-indexing = "[", number, "]";
-left_side = ident, [indexing],
-atomic_property = left_side, equality_operator, number |
-    "as_unsigned", "(", left_side, ")", comparison_operator, number |
-    "as_signed", "(", left_side, ")", comparison_operator, number;
-negation = "!", "(", property, ")";
-property_part = atomic_property 
-        | negation 
-        | ctl_macro, "[", property, {",", property} , "]"
-        | mu_calculus_macro, "[", ident, ",", property "]"
-        | mu_calculus_variable;
-property = property_part, {"&&", property_part} 
-        | property_part, {"||", property_part};
-```
+Also supported are the functions `as_signed` and `as_unsigned`, demonstrated previously. Note that the syntax sugar for literal coercion and `as_signed`/`as_unsigned` are specific to properties only and cannot be used when writing systems.
 
+## Temporal Logic Operators
+
+The temporal logic operators are written as Rust macros. There are two basic types of them: Computation Tree Logic operators and μ-calculus fixed-point operators. Generally, they expect property expressions given as their arguments to evaluate to Boolean values, and they return a Boolean value. The argument expressions are essentially evaluated in new contexts, using the field values of the state they operate on instead of the outer values.
+
+The CTL operators `EX!`, `AX!`, `EF!`, `AF!`, `EG!` and `AG!` take a single property expression. The CTL operators `EU!`, `AU!`, `ER!`, and `AR!` take two property expressions, in the order of arguments usual for CTL. The μ-calculus fixed-point operators [described in an advanced chapter](../advanced/adv2_mu_calculus.md) take two arguments, where the first one is an identifier of a new fixed-point variable that can be used within any nesting of the temporal operators (unless shadowed) and the second one is the property expression to evaluate.

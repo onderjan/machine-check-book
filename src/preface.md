@@ -14,9 +14,9 @@ Unlike some other verifiers, **machine-check** is designed to be *sound*, never 
 
 Interested? [Read the Quickstart.](./machine-check/ch1_quickstart.md)
 
-> &#x2139;&#xFE0F; **Machine-check** 0.6.0 has been released on 26th August 2025, with support for propositional μ-calculus and parametric systems. [Read the accompanying blogpost.](https://machine-check.org/blog/03-v0-6-0/) A patch release 0.6.1 [has been released](https://machine-check.org/blog/04-v0-6-1/) on 12th September 2025. To migrate your systems to the new version, [read this](./misc/version_migration.md).
+> &#x2139;&#xFE0F; **Machine-check** [version 0.7.0](https://crates.io/crates/machine-check/0.7.0) has been released on 28th October 2025, with support for more expressive properties and other improvements. [Read the accompanying blogpost.](https://machine-check.org/blog/04-v0-7-0/) 
 >
-> &#x1F6E0;&#xFE0F; Currently, **machine-check** is in active development, with the [version 0.6.1](https://crates.io/crates/machine-check/0.6.1) described in this guide. While the basic building blocks are in place, some details may still change considerably in the future.
+> &#x1F6E0;&#xFE0F; Currently, **machine-check** is in active development. While the basic building blocks are in place, some details may still change considerably in the future.
 >
 
 ## Useful links
