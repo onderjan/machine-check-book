@@ -7,15 +7,15 @@ Let's start with a very simple property: is the value zero at the start of the c
 
 ```console
 $ cargo run -- --property 'value == 0'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.13s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "value == 0"`
-[2025-08-25T17:28:02Z INFO  machine_check] Starting verification.
-[2025-08-25T17:28:02Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:28:02Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:28:02Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:28:02Z INFO  machine_check] Verification ended.
+[2025-10-28T22:20:12Z INFO  machine_check] Starting verification.
+[2025-10-28T22:20:12Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:20:12Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:20:12Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:20:12Z INFO  machine_check] Verification ended.
 +------------------------------+
 |        Result: HOLDS         |
 +------------------------------+
@@ -46,15 +46,15 @@ Verifying a single state is admittedly quite boring. The real power of the [Comp
 
 ```console
 $ cargo run -- --property 'AX![value == 0]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "AX![value == 0]"`
-[2025-08-25T17:28:19Z INFO  machine_check] Starting verification.
-[2025-08-25T17:28:19Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:28:19Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:28:19Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:28:19Z INFO  machine_check] Verification ended.
+[2025-10-28T22:20:32Z INFO  machine_check] Starting verification.
+[2025-10-28T22:20:32Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:20:32Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:20:32Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:20:32Z INFO  machine_check] Verification ended.
 +------------------------------+
 |    Result: DOES NOT HOLD     |
 +------------------------------+
@@ -85,15 +85,15 @@ Of course this does not hold: we can increment the value, so `value` will no lon
 
 ```console
 $ cargo run -- --property 'EX![value == 0]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "EX![value == 0]"`
-[2025-08-25T17:28:37Z INFO  machine_check] Starting verification.
-[2025-08-25T17:28:37Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:28:37Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:28:37Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:28:37Z INFO  machine_check] Verification ended.
+[2025-10-28T22:20:44Z INFO  machine_check] Starting verification.
+[2025-10-28T22:20:44Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:20:44Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:20:44Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:20:44Z INFO  machine_check] Verification ended.
 +------------------------------+
 |        Result: HOLDS         |
 +------------------------------+
@@ -109,15 +109,15 @@ Wonderful. But we have just started to discover the possibilities. While **AX** 
 
 ```console
 $ cargo run -- --property 'AG![as_unsigned(value) <= 15]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "AG![as_unsigned(value) <= 15]"`
-[2025-08-25T17:28:47Z INFO  machine_check] Starting verification.
-[2025-08-25T17:28:47Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:28:47Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:28:47Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:28:47Z INFO  machine_check] Verification ended.
+[2025-10-28T22:21:05Z INFO  machine_check] Starting verification.
+[2025-10-28T22:21:05Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:21:05Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:21:05Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:21:05Z INFO  machine_check] Verification ended.
 +------------------------------+
 |        Result: HOLDS         |
 +------------------------------+
@@ -133,15 +133,15 @@ While this would not hold for a constant lesser than 15 (you can try it), **EG**
 
 ```console
 $ cargo run -- --property 'EG![value == 0]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.11s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "EG![value == 0]"`
-[2025-08-25T17:29:04Z INFO  machine_check] Starting verification.
-[2025-08-25T17:29:04Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:29:04Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:29:04Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:29:04Z INFO  machine_check] Verification ended.
+[2025-10-28T22:21:13Z INFO  machine_check] Starting verification.
+[2025-10-28T22:21:13Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:21:13Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:21:13Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:21:13Z INFO  machine_check] Verification ended.
 +------------------------------+
 |        Result: HOLDS         |
 +------------------------------+
@@ -157,15 +157,15 @@ Great. What if we try to verify if it stays to be 3?
 
 ```console
 $ cargo run -- --property 'EG![value == 3]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "EG![value == 3]"`
-[2025-08-25T17:29:14Z INFO  machine_check] Starting verification.
-[2025-08-25T17:29:14Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:29:14Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:29:14Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:29:14Z INFO  machine_check] Verification ended.
+[2025-10-28T22:21:26Z INFO  machine_check] Starting verification.
+[2025-10-28T22:21:26Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:21:26Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:21:26Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:21:26Z INFO  machine_check] Verification ended.
 +------------------------------+
 |    Result: DOES NOT HOLD     |
 +------------------------------+
@@ -181,15 +181,15 @@ It does not, since `value` is 0 at the start. To reason about the future, we can
 
 ```console
 $ cargo run -- --property 'EF![as_unsigned(value) == 3]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.14s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "EF![as_unsigned(value) == 3]"`
-[2025-08-25T17:29:28Z INFO  machine_check] Starting verification.
-[2025-08-25T17:29:28Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:29:28Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:29:28Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:29:28Z INFO  machine_check] Verification ended.
+[2025-10-28T22:21:34Z INFO  machine_check] Starting verification.
+[2025-10-28T22:21:34Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:21:34Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:21:34Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:21:34Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -205,15 +205,15 @@ The nice thing about CTL is that we can build more interesting reasoning from ne
 
 ```console
 $ cargo run -- --property 'EF![EG![value == 3]]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "EF![EG![value == 3]]"`
-[2025-08-25T17:29:40Z INFO  machine_check] Starting verification.
-[2025-08-25T17:29:40Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:29:40Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:29:40Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:29:40Z INFO  machine_check] Verification ended.
+[2025-10-28T22:21:42Z INFO  machine_check] Starting verification.
+[2025-10-28T22:21:42Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:21:42Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:21:42Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:21:42Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -232,15 +232,15 @@ In **machine-check** properties, we write these operators as macros with two arg
 
 ```console
 $ cargo run -- --property 'EU![as_unsigned(value) < 3, value == 3]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "EU![as_unsigned(value) < 3, value == 3]"`
-[2025-08-25T17:29:49Z INFO  machine_check] Starting verification.
-[2025-08-25T17:29:49Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:29:49Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:29:49Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:29:49Z INFO  machine_check] Verification ended.
+[2025-10-28T22:22:04Z INFO  machine_check] Starting verification.
+[2025-10-28T22:22:04Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:22:04Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:22:04Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:22:04Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -256,15 +256,15 @@ And for all input sequences, `value` being 3 releases the requirement for `value
 
 ```console
 $ cargo run -- --property 'AR![value == 3, as_unsigned(value) <= 3]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "AR![value == 3, as_unsigned(value) <= 3]"`
-[2025-08-25T17:29:58Z INFO  machine_check] Starting verification.
-[2025-08-25T17:29:58Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:29:58Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:29:58Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:29:58Z INFO  machine_check] Verification ended.
+[2025-10-28T22:22:15Z INFO  machine_check] Starting verification.
+[2025-10-28T22:22:15Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:22:15Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:22:15Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:22:15Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -283,15 +283,15 @@ In addition to CTL operators, **machine-check** properties support logical not (
 
 ```console
 $ cargo run -- --property 'AG![!(value == 5) || AX![value == 5 || value == 6]]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "AG![!(value == 5) || AX![value == 5 || value == 6]]"`
-[2025-08-25T17:30:15Z INFO  machine_check] Starting verification.
-[2025-08-25T17:30:15Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:30:15Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:30:15Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:30:15Z INFO  machine_check] Verification ended.
+[2025-10-28T22:22:23Z INFO  machine_check] Starting verification.
+[2025-10-28T22:22:23Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:22:23Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:22:23Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:22:23Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -307,15 +307,15 @@ Last but not least, we can verify a *recovery* property stating that in all reac
 
 ```console
 $ cargo run -- --property 'AG![EF![value == 0]]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "AG![EF![value == 0]]"`
-[2025-08-25T17:31:43Z INFO  machine_check] Starting verification.
-[2025-08-25T17:31:43Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:31:43Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:31:43Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:31:43Z INFO  machine_check] Verification ended.
+[2025-10-28T22:22:31Z INFO  machine_check] Starting verification.
+[2025-10-28T22:22:31Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:22:31Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:22:31Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:22:31Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+

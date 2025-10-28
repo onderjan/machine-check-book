@@ -70,15 +70,15 @@ The system loads a value from the input during the next state computation, makin
 
 ```console
 $ cargo run -- --property 'AG![value == 0]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.47s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "AG![value == 0]"`
-[2025-08-25T20:40:14Z INFO  machine_check] Starting verification.
-[2025-08-25T20:40:14Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T20:40:14Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T20:40:14Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T20:40:14Z INFO  machine_check] Verification ended.
+[2025-10-28T22:26:48Z INFO  machine_check] Starting verification.
+[2025-10-28T22:26:48Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:26:48Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:26:48Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:26:48Z INFO  machine_check] Verification ended.
 +-----------------------------------+
 |   Result: DEPENDS ON PARAMETERS   |
 +-----------------------------------+
@@ -98,13 +98,13 @@ Some properties, however, hold or not independently on the parameter:
 cargo run -- --property 'AF![as_unsigned(value) > 0]'
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.11s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "AF![as_unsigned(value) > 0]"`
-[2025-08-25T20:45:40Z INFO  machine_check] Starting verification.
-[2025-08-25T20:45:40Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T20:45:40Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T20:45:40Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T20:45:41Z INFO  machine_check] Verification ended.
+[2025-10-28T22:27:03Z INFO  machine_check] Starting verification.
+[2025-10-28T22:27:03Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:27:03Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:27:03Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:27:03Z INFO  machine_check] Verification ended.
 +--------------------------------+
 |     Result: DOES NOT HOLD      |
 +--------------------------------+
@@ -129,7 +129,7 @@ It is also possible to use the parameters in the next state computation function
 
 We can also use parametric systems with a different thought process. Consider that you are given a specification in form of a system which has some unspecified parts, and an implementation that should "fill the spots" while retaining the behaviours of the specification system. Then, you can actually think of the specification system as a system that is parametrised by variables determining the unspecified values.
 
-Let's look at the simple [system hierarchy example](https://docs.rs/crate/machine-check/0.7.0/source/examples/parametric.rs) for **machine-check**, where a specification of a system performing an unsigned division of two numbers says that the result of division by zero must be either 0 (as in e.g. some AVR processors) or the unsigned maximum (as in e.g. RISC-V), but leaves the implementation free to choose one of them. The specification result is represented by `specified_value`, the implementation result as `impl_value`, and the relevant computation is as follows (`param.unspecified` is a signed single-bit parameter, which will be extended either to 0 or -1, i.e. the maximum unsigned value):
+Let's look at the simple [system hierarchy example](https://docs.rs/crate/machine-check/0.7.0/source/examples/hierarchy.rs) for **machine-check**, where a specification of a system performing an unsigned division of two numbers says that the result of division by zero must be either 0 (as in e.g. some AVR processors) or the unsigned maximum (as in e.g. RISC-V), but leaves the implementation free to choose one of them. The specification result is represented by `specified_value`, the implementation result as `impl_value`, and the relevant computation is as follows (`param.unspecified` is a signed single-bit parameter, which will be extended either to 0 or -1, i.e. the maximum unsigned value):
 
 ```rust
             if input.divisor != Unsigned::<4>::new(0) {
@@ -146,11 +146,11 @@ Running the example normally (add import `clap = { version = "4.4.6", features =
 ```console
 cargo run -- --property 'AG![specified_value == impl_value]'
 (...)
-[2025-10-28T18:41:16Z INFO  machine_check] Starting verification.
-[2025-10-28T18:41:16Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-10-28T18:41:16Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-10-28T18:41:16Z INFO  machine_check::verify] Verifying the given property.
-[2025-10-28T18:41:16Z INFO  machine_check] Verification ended.
+[2025-10-28T22:28:20Z INFO  machine_check] Starting verification.
+[2025-10-28T22:28:20Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:28:20Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:28:20Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:28:20Z INFO  machine_check] Verification ended.
 +-----------------------------------+
 |   Result: DEPENDS ON PARAMETERS   |
 +-----------------------------------+
@@ -168,11 +168,11 @@ This actually makes sense in the context: if the parameter (unspecified value) i
 
  cargo run -- --property 'AG![specified_value == impl_value]' --system-wrong-div-by-zero
  (...)
-[2025-10-28T18:44:30Z INFO  machine_check] Starting verification.
-[2025-10-28T18:44:30Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-10-28T18:44:30Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-10-28T18:44:30Z INFO  machine_check::verify] Verifying the given property.
-[2025-10-28T18:44:30Z INFO  machine_check] Verification ended.
+[2025-10-28T22:28:43Z INFO  machine_check] Starting verification.
+[2025-10-28T22:28:43Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:28:43Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:28:43Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:28:43Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |     Result: DOES NOT HOLD     |
 +-------------------------------+

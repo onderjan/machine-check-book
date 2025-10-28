@@ -27,17 +27,17 @@ It is possible to verify various properties of Btor2 systems using **machine-che
 To actually verify something, we can obtain a simple Btor2 system, e.g. [`beads.btor2`](https://docs.rs/crate/machine-check-hw/0.6.1/source/examples/beads.btor2) from **machine-check-hw** examples. By pointing machine-check-hw to a Btor2 file, it can verify the safety of the system, as specified in the Btor2 file, with a property `AG![safe == 1]`, which uses a special field `safe`:
 ```console
 $ machine-check-hw verify ./beads.btor2 --property 'AG![safe == 1]'
-[2025-08-25T18:44:34Z INFO  machine_check_compile::verify] Transcribing the system into a machine.
-[2025-08-25T18:44:34Z INFO  machine_check_compile::verify] Building a machine verifier.
-[2025-08-25T18:44:35Z INFO  machine_check_compile::verify] Executing the machine verifier.
-[2025-08-25T18:44:35Z INFO  machine_check] Starting verification.
-[2025-08-25T18:44:35Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T18:44:35Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T18:44:35Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T18:44:35Z INFO  machine_check] Verification ended.
-[2025-08-25T18:44:35Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0006903), build_time: Some(1.4365246), execution_time: Some(0.0816855), prepared: Some(true) }
-[2025-08-25T18:44:35Z INFO  machine_check_hw::verify] Used 3 states and 0 refinements.
-[2025-08-25T18:44:35Z INFO  machine_check_hw::verify] Reached conclusion: true
+[2025-10-28T22:38:52Z INFO  machine_check_compile::verify] Transcribing the system into a machine.
+[2025-10-28T22:38:52Z INFO  machine_check_compile::verify] Building a machine verifier.
+[2025-10-28T22:38:58Z INFO  machine_check_compile::verify] Executing the machine verifier.
+[2025-10-28T22:38:58Z INFO  machine_check] Starting verification.
+[2025-10-28T22:38:58Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:38:58Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:38:58Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:38:58Z INFO  machine_check] Verification ended.
+[2025-10-28T22:38:58Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0008279), build_time: Some(6.1309139), execution_time: Some(0.0952816), prepared: Some(true) }
+[2025-10-28T22:38:58Z INFO  machine_check_hw::verify] Used 3 states and 0 refinements.
+[2025-10-28T22:38:58Z INFO  machine_check_hw::verify] Reached conclusion: true
 ```
 
 ## Recovery
@@ -46,9 +46,9 @@ We can also verify the property of whether the system recovers to its initial in
 ```console
 $ machine-check-hw verify ./beads.btor2 --property 'AG![EF![eq_init == 1]]'
 (...)
-[2025-08-25T18:44:57Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0006992), build_time: Some(1.4516138), execution_time: Some(0.0808081), prepared: Some(true) }
-[2025-08-25T18:44:57Z INFO  machine_check_hw::verify] Used 5 states and 5 refinements.
-[2025-08-25T18:44:57Z INFO  machine_check_hw::verify] Reached conclusion: true
+[2025-10-28T22:39:13Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0007483), build_time: Some(5.8962471), execution_time: Some(0.0995338), prepared: Some(true) }
+[2025-10-28T22:39:13Z INFO  machine_check_hw::verify] Used 5 states and 5 refinements.
+[2025-10-28T22:39:13Z INFO  machine_check_hw::verify] Reached conclusion: true
 ```
 
 ## State properties
@@ -58,60 +58,60 @@ Instead of verifying reachability properties in the file, we can verify custom C
 ```console
 $ machine-check-hw verify ./beads.btor2 --property 'EG![node_200 == 1]'
 (...)
-[2025-08-25T18:45:20Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0006735), build_time: Some(1.4419297), execution_time: Some(0.0806013), prepared: Some(true) }
-[2025-08-25T18:45:20Z INFO  machine_check_hw::verify] Used 3 states and 0 refinements.
-[2025-08-25T18:45:20Z INFO  machine_check_hw::verify] Reached conclusion: false
+[2025-10-28T22:39:50Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0006642), build_time: Some(5.8038741), execution_time: Some(0.0949872), prepared: Some(true) }
+[2025-10-28T22:39:50Z INFO  machine_check_hw::verify] Used 3 states and 0 refinements.
+[2025-10-28T22:39:50Z INFO  machine_check_hw::verify] Reached conclusion: false
 ```
 The conclusion is false, i.e. there does not exist a path where the bead is always in the second position.
 
 ```console
 $ machine-check-hw verify ./beads.btor2 --property 'EF![EG![node_200 == 1]]'
 (...)
-[2025-08-25T18:45:31Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0007025), build_time: Some(1.4678518999999999), execution_time: Some(0.083857), prepared: Some(true) }
-[2025-08-25T18:45:31Z INFO  machine_check_hw::verify] Used 6 states and 3 refinements.
-[2025-08-25T18:45:31Z INFO  machine_check_hw::verify] Reached conclusion: true
+[2025-10-28T22:39:27Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.000709), build_time: Some(5.914955), execution_time: Some(0.0975522), prepared: Some(true) }
+[2025-10-28T22:39:27Z INFO  machine_check_hw::verify] Used 6 states and 3 refinements.
+[2025-10-28T22:39:27Z INFO  machine_check_hw::verify] Reached conclusion: true
 ```
 The conclusion is true, i.e. there exists a future where the bead moves to second position and then stays there. 
 
 ```console
 $ machine-check-hw verify ./beads.btor2 --property 'AF![node_200 == 1]'
 (...)
-[2025-08-25T18:45:41Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0009741), build_time: Some(1.4736475), execution_time: Some(0.0807074), prepared: Some(true) }
-[2025-08-25T18:45:41Z INFO  machine_check_hw::verify] Used 5 states and 1 refinements.
-[2025-08-25T18:45:41Z INFO  machine_check_hw::verify] Reached conclusion: false
+[2025-10-28T22:40:05Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0008921), build_time: Some(6.03603), execution_time: Some(0.0960045), prepared: Some(true) }
+[2025-10-28T22:40:05Z INFO  machine_check_hw::verify] Used 5 states and 1 refinements.
+[2025-10-28T22:40:05Z INFO  machine_check_hw::verify] Reached conclusion: false
 ```
 The conclusion is false, i.e. we cannot be sure that the bead will ever move to the second position.
 
 ```console
 $ machine-check-hw verify ./beads.btor2 --property 'EU![node_100 == 1, node_200 == 1]'
 (...)
-[2025-08-25T18:45:50Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0006952), build_time: Some(1.4387531), execution_time: Some(0.0795216), prepared: Some(true) }
-[2025-08-25T18:45:50Z INFO  machine_check_hw::verify] Used 5 states and 1 refinements.
-[2025-08-25T18:45:50Z INFO  machine_check_hw::verify] Reached conclusion: true
+[2025-10-28T22:40:19Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0010942), build_time: Some(5.7909552), execution_time: Some(0.0959956), prepared: Some(true) }
+[2025-10-28T22:40:19Z INFO  machine_check_hw::verify] Used 5 states and 1 refinements.
+[2025-10-28T22:40:19Z INFO  machine_check_hw::verify] Reached conclusion: true
 ```
 The conclusion is true, i.e. there exists a path where the the bead is in the first position until it is in the second position, and the second position is reached.
 
 ```console
 $ machine-check-hw verify ./beads.btor2 --property 'AU![node_100 == 1, node_200 == 1]'
 (...)
-[2025-08-25T18:45:59Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0007486), build_time: Some(1.428923), execution_time: Some(0.0805154), prepared: Some(true) }
-[2025-08-25T18:45:59Z INFO  machine_check_hw::verify] Used 5 states and 1 refinements.
-[2025-08-25T18:45:59Z INFO  machine_check_hw::verify] Reached conclusion: false
+[2025-10-28T22:40:37Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.001045), build_time: Some(5.9079046), execution_time: Some(0.0968339), prepared: Some(true) }
+[2025-10-28T22:40:37Z INFO  machine_check_hw::verify] Used 5 states and 1 refinements.
+[2025-10-28T22:40:37Z INFO  machine_check_hw::verify] Reached conclusion: false
 ```
 The conclusion is false, i.e. the bead stops being in the first position before being in the second position (which we know is not possible), or the second position is never reached (which is possible if it stays in the first position forever).
 
 ```console
 $ machine-check-hw verify ./beads.btor2 --property 'AG![!(node_200 == 1) || EX![node_300 == 1]]'
 (...)
-[2025-08-25T18:46:15Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0006793), build_time: Some(1.4580101), execution_time: Some(0.0812646), prepared: Some(true) }
-[2025-08-25T18:46:15Z INFO  machine_check_hw::verify] Used 5 states and 5 refinements.
-[2025-08-25T18:46:15Z INFO  machine_check_hw::verify] Reached conclusion: true
+[2025-10-28T22:40:51Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0006929), build_time: Some(5.9525331999999995), execution_time: Some(0.096231), prepared: Some(true) }
+[2025-10-28T22:40:51Z INFO  machine_check_hw::verify] Used 5 states and 5 refinements.
+[2025-10-28T22:40:51Z INFO  machine_check_hw::verify] Reached conclusion: true
 
 $ machine-check-hw verify ./beads.btor2 --property 'AG![!(node_200 == 1) || EX![node_100 == 1]]'
 (...)
-[2025-08-25T18:46:25Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0006994), build_time: Some(1.4465303999999999), execution_time: Some(0.0808589), prepared: Some(true) }
-[2025-08-25T18:46:25Z INFO  machine_check_hw::verify] Used 5 states and 1 refinements.
-[2025-08-25T18:46:25Z INFO  machine_check_hw::verify] Reached conclusion: false
+[2025-10-28T22:41:05Z INFO  machine_check_compile::verify] Stats: Stats { transcription_time: Some(0.0006606), build_time: Some(5.8645651), execution_time: Some(0.0946764), prepared: Some(true) }
+[2025-10-28T22:41:05Z INFO  machine_check_hw::verify] Used 5 states and 1 refinements.
+[2025-10-28T22:41:05Z INFO  machine_check_hw::verify] Reached conclusion: false
 ```
 The conclusions mean that the bead being in the second position implies that the bead can move to the third position in the next state. However, it cannot move to the first position so quickly.
 

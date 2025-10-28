@@ -109,15 +109,15 @@ That is a lot of code. Fortunately, most of it is just boilerplate around the co
 ```console
 $ cargo run -- --property 'AG![EF![value == 0]]'
    Compiling hello-machine-check v0.1.0 ((...)\hello-machine-check)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.36s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 11.98s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "AG![EF![value == 0]]"`
-[2025-08-25T17:23:24Z INFO  machine_check] Starting verification.
-[2025-08-25T17:23:24Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:23:24Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:23:24Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:23:24Z INFO  machine_check] Verification ended.
+[2025-10-28T22:19:37Z INFO  machine_check] Starting verification.
+[2025-10-28T22:19:37Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:19:37Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:19:37Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:19:37Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+

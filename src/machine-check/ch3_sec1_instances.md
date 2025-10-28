@@ -101,16 +101,16 @@ We introduced a new four-bit bit-vector field `max_value` in the `System` struct
 ```console
 $ cargo run -- --property 'EF![value == 10]'
    Compiling hello-machine-check v0.1.0 ((...)\hello-machine-check)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.48s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.02s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
 Write the maximum system value: 5
-[2025-08-25T17:37:15Z INFO  machine_check] Starting verification.
-[2025-08-25T17:37:15Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:37:15Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:37:15Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:37:15Z INFO  machine_check] Verification ended.
+[2025-10-28T22:23:19Z INFO  machine_check] Starting verification.
+[2025-10-28T22:23:19Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:23:19Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:23:19Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:23:19Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |     Result: DOES NOT HOLD     |
 +-------------------------------+
@@ -122,16 +122,16 @@ Write the maximum system value: 5
 +-------------------------------+
 
 $ cargo run -- --property 'EF![value == 10]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.12s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
 Write the maximum system value: 12
-[2025-08-25T17:37:30Z INFO  machine_check] Starting verification.
-[2025-08-25T17:37:30Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:37:30Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:37:30Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:37:30Z INFO  machine_check] Verification ended.
+[2025-10-28T22:23:36Z INFO  machine_check] Starting verification.
+[2025-10-28T22:23:36Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:23:36Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:23:36Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:23:36Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -143,14 +143,14 @@ Write the maximum system value: 12
 +-------------------------------+
 
 $ cargo run -- --property 'EF![value == 10]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
 Write the maximum system value: 20
 
-thread 'main' panicked at (...)\mck-0.6.1\src\bitvector\concr\support.rs:68:13:
-Machine bitvector value 20 does not fit into 4 bits
+thread 'main' panicked at (...)\mck-0.7.0\src\bitvector\concr\support.rs:18:25:
+Bitvector (width 4) value 20 is outside bounds [0,15]
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 error: process didn't exit successfully: `target\debug\hello-machine-check.exe --property "EF![value == 10]"` (exit code: 101)
 ```
@@ -178,16 +178,16 @@ Now, the verification will return an error when verifying a property and a panic
 ```console
 $ cargo run -- --property 'EF![value == 10]'    
    Compiling hello-machine-check v0.1.0 ((...)\hello-machine-check)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.26s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.39s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "EF![value == 10]"`
 Write the maximum system value: 5
-[2025-08-25T17:39:18Z INFO  machine_check] Starting verification.
-[2025-08-25T17:39:18Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:39:18Z ERROR machine_check] Verification returned an error.
+[2025-10-28T22:24:37Z INFO  machine_check] Starting verification.
+[2025-10-28T22:24:37Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:24:37Z ERROR machine_check] Verification returned an error.
 +----------------------------------------------------------------------------------------------------------+
-|                                      Result: ERROR (inherent panic)                                      |
+|                                     Result: ERROR ("inherent panic")                                     |
 +----------------------------------------------------------------------------------------------------------+
 |  Refinements:                                                                                         6  |
 |  Generated states:                                                                                   22  |
@@ -201,16 +201,16 @@ Write the maximum system value: 5
 However, in case the panic cannot occur, the verification will proceed normally:
 ```console
 $ cargo run -- --property 'EF![value == 15]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "EF![value == 15]"`
 Write the maximum system value: 15
-[2025-08-25T17:39:50Z INFO  machine_check] Starting verification.
-[2025-08-25T17:39:50Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-08-25T17:39:50Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-08-25T17:39:50Z INFO  machine_check::verify] Verifying the given property.
-[2025-08-25T17:39:50Z INFO  machine_check] Verification ended.
+[2025-10-28T22:24:52Z INFO  machine_check] Starting verification.
+[2025-10-28T22:24:52Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:24:52Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:24:52Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:24:52Z INFO  machine_check] Verification ended.
 +-------------------------------+
 |         Result: HOLDS         |
 +-------------------------------+
@@ -225,14 +225,14 @@ Write the maximum system value: 15
 This is the meaning of the messages when verifying: first, the inherent property (no panics can be reached) is verified, then, the given property (`EF![value == 15]` in our case) is verified. We can also verify just the inherent property itself:
 ```console
 $ cargo run -- --inherent
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --inherent`
 Write the maximum system value: 10
-[2025-08-25T17:40:07Z INFO  machine_check] Starting verification.
-[2025-08-25T17:40:07Z INFO  machine_check::verify] Verifying the inherent property.
-[2025-08-25T17:40:07Z INFO  machine_check] Verification ended.
+[2025-10-28T22:25:11Z INFO  machine_check] Starting verification.
+[2025-10-28T22:25:11Z INFO  machine_check::verify] Verifying the inherent property.
+[2025-10-28T22:25:11Z INFO  machine_check] Verification ended.
 +----------------------------------------------------------------------------------------------------------+
 |                                          Result: DOES NOT HOLD                                           |
 +----------------------------------------------------------------------------------------------------------+
@@ -245,14 +245,14 @@ Write the maximum system value: 10
 +----------------------------------------------------------------------------------------------------------+
 
 $ cargo run -- --inherent
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --inherent`
 Write the maximum system value: 15
-[2025-08-25T17:40:20Z INFO  machine_check] Starting verification.
-[2025-08-25T17:40:20Z INFO  machine_check::verify] Verifying the inherent property.
-[2025-08-25T17:40:20Z INFO  machine_check] Verification ended.
+[2025-10-28T22:25:24Z INFO  machine_check] Starting verification.
+[2025-10-28T22:25:24Z INFO  machine_check::verify] Verifying the inherent property.
+[2025-10-28T22:25:24Z INFO  machine_check] Verification ended.
 +------------------------------+
 |        Result: HOLDS         |
 +------------------------------+

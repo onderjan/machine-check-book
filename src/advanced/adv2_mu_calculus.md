@@ -56,15 +56,15 @@ We want to know if the value is definitely zero in even time instants, while it 
 
 ```console
 $ cargo run -- --property 'gfp![Z, value == 0 && AX![AX![Z]]]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.31s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "gfp![Z, value == 0 && AX![AX![Z]]]"`
-[2025-09-14T17:14:49Z INFO  machine_check] Starting verification.
-[2025-09-14T17:14:49Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-09-14T17:14:49Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-09-14T17:14:49Z INFO  machine_check::verify] Verifying the given property.
-[2025-09-14T17:14:49Z INFO  machine_check] Verification ended.
+[2025-10-28T22:29:40Z INFO  machine_check] Starting verification.
+[2025-10-28T22:29:40Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:29:40Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:29:40Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:29:40Z INFO  machine_check] Verification ended.
 +------------------------------+
 |        Result: HOLDS         |
 +------------------------------+
@@ -86,16 +86,15 @@ Let us first verify the CTL property *eventually forever*:
 
 ```console
 $ cargo run -- --property 'AF![AG![p == 1]]'
-   Compiling hello-machine-check v0.1.0 (C:\Users\Mallory\rust\machine-check-book\hello-machine-check)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 13.07s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.99s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "AF![AG![p == 1]]"`
-[2025-09-14T18:25:25Z INFO  machine_check] Starting verification.
-[2025-09-14T18:25:25Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-09-14T18:25:25Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-09-14T18:25:25Z INFO  machine_check::verify] Verifying the given property.
-[2025-09-14T18:25:25Z INFO  machine_check] Verification ended.
+[2025-10-28T22:30:26Z INFO  machine_check] Starting verification.
+[2025-10-28T22:30:26Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:30:26Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:30:26Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:30:26Z INFO  machine_check] Verification ended.
 +------------------------------+
 |    Result: DOES NOT HOLD     |
 +------------------------------+
@@ -113,15 +112,15 @@ The property *infinitely often* allows us to suspend our disbelief for the momen
 
 ```console
 $ cargo run -- --property 'lfp![X,gfp![Y, AX![X] || (p == 1 && AX![Y])]]'
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.11s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
      Running `target\debug\hello-machine-check.exe --property "lfp![X,gfp![Y, AX![X] || (p == 1 && AX![Y])]]"`
-[2025-09-14T17:07:58Z INFO  machine_check] Starting verification.
-[2025-09-14T17:07:58Z INFO  machine_check::verify] Verifying the inherent property first.
-[2025-09-14T17:07:58Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
-[2025-09-14T17:07:58Z INFO  machine_check::verify] Verifying the given property.
-[2025-09-14T17:07:58Z INFO  machine_check] Verification ended.
+[2025-10-28T22:30:45Z INFO  machine_check] Starting verification.
+[2025-10-28T22:30:45Z INFO  machine_check::verify] Verifying the inherent property first.
+[2025-10-28T22:30:45Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
+[2025-10-28T22:30:45Z INFO  machine_check::verify] Verifying the given property.
+[2025-10-28T22:30:45Z INFO  machine_check] Verification ended.
 +------------------------------+
 |        Result: HOLDS         |
 +------------------------------+
