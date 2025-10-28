@@ -4,15 +4,15 @@ The properties of **machine-check** are described in a subset of Rust expression
 
 ## Available Variables
 
-All fields of the struct `State` of the machine under verification are available to use just using their struct field names. Together, these variables represent the current state. The fields must be of **machine-check** types [Unsigned](https://docs.rs/machine-check/0.6.1/machine_check/struct.Unsigned.html) and [Signed](https://docs.rs/machine-check/0.6.1/machine_check/struct.Signed.html), [Bitvector](https://docs.rs/machine-check/0.6.1/machine_check/struct.Bitvector.html), or [BitvectorArray](https://docs.rs/machine-check/0.6.1/machine_check/struct.BitvectorArray.html).
+All fields of the struct `State` of the machine under verification are available to use just using their struct field names. Together, these variables represent the current state. The fields must be of **machine-check** types [Unsigned](https://docs.rs/machine-check/0.7.0/machine_check/struct.Unsigned.html) and [Signed](https://docs.rs/machine-check/0.7.0/machine_check/struct.Signed.html), [Bitvector](https://docs.rs/machine-check/0.7.0/machine_check/struct.Bitvector.html), or [BitvectorArray](https://docs.rs/machine-check/0.7.0/machine_check/struct.BitvectorArray.html).
 
 >
-> &#x1F6E0;&#xFE0F; Currently, the signedness of bit-vectors in the system is not known by the property, i.e. [Unsigned](https://docs.rs/machine-check/0.6.1/machine_check/struct.Unsigned.html) and [Signed](https://docs.rs/machine-check/0.6.1/machine_check/struct.Signed.html) fields of `State` are seen by the property as [Bitvector](https://docs.rs/machine-check/0.6.1/machine_check/struct.Bitvector.html) variables.
+> &#x1F6E0;&#xFE0F; Currently, the signedness of bit-vectors in the system is not known by the property, i.e. [Unsigned](https://docs.rs/machine-check/0.7.0/machine_check/struct.Unsigned.html) and [Signed](https://docs.rs/machine-check/0.7.0/machine_check/struct.Signed.html) fields of `State` are seen by the property as [Bitvector](https://docs.rs/machine-check/0.7.0/machine_check/struct.Bitvector.html) variables.
 >
 
 ## Standard Expressions and Syntax Sugar
 
-Standard Rust operators that are supported by the types of fields are also available in property expressions. This notably includes [BitvectorArray](https://docs.rs/machine-check/0.6.1/machine_check/struct.BitvectorArray.html) read (`array_field[bitvector_index]`) and short-circuiting AND (`&&`) and OR (`||`) for Booleans obtained from equality, comparison, or temporal logic operators.
+Standard Rust operators that are supported by the types of fields are also available in property expressions. This notably includes [BitvectorArray](https://docs.rs/machine-check/0.7.0/machine_check/struct.BitvectorArray.html) read (`array_field[bitvector_index]`) and short-circuiting AND (`&&`) and OR (`||`) for Booleans obtained from equality, comparison, or temporal logic operators.
 
 Also supported are constructor functions for the types. The functions must be used by their full paths. For example, `::machine_check::Unsigned::<8>::new(0) != ::machine_check::Unsigned::<8>::new(1)` is a valid type. Of course, this is a bit unwieldy, so literals in equalities/comparisons are coerced to the appropriate **machine-check** type if it is possible to infer that, e.g. `value == 0` is a valid property expression if `value` is a bitvector field.
 

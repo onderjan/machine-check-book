@@ -41,7 +41,7 @@ In your `Cargo.toml`, add the following dependency:
 
 ```toml
 [dependencies]
-machine-check = "0.6.1"
+machine-check = "0.7.0"
 ```
 
 You can start using **machine-check** in Rust now. Let's create a minimal somewhat interesting system to verify. Put this in your `src/main.rs`:
