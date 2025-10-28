@@ -27,11 +27,11 @@ Continuing with `hello-machine-check` from [Quickstart](./ch1_quickstart.md):
 $ cargo run --features gui -- --property 'AG![EF![value == 0]]' --gui
 (... compiling, building ~300 crates ...)
    Compiling hello-machine-check v0.1.0 ((...)\hello-machine-check)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.05s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 37.49s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
-note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
-     Running `target\debug\hello-machine-check.exe --property "AG![EF![value == 0]]" --gui`
-[2025-08-25T18:01:14Z INFO  machine_check_gui::backend::window] GUI window opened
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 2`
+     Running `target\debug\hello-machine-check.exe --gui`
+[2025-10-28T22:47:36Z INFO  machine_check_gui::backend::window] GUI window opened
 ```
 
 A window like this should open:
@@ -89,8 +89,8 @@ and the temporal operators just combine this information from sub-properties. As
 the sub-property `value == 0`:
 <a href="../images/gui_4.png"><img src="../images/gui_4.png" style="width:100%; margin: 1.5em; margin-left: auto; margin-right: auto; display:block"></a>
 
-We see that `value == 0` holds for the state #1 (`"0000"`), but does not hold for the states #6, #8, #11, #13, and #17 (`"0001"`, `"0010"`, ..., `"0101"`).
-It is unknown whether it holds for #15 (`"01XX"`) or #5 (`"XXXX"`), as these may represent `0000` among others. We can switch to `EF![value == 0]` to 
+We see that `value == 0` holds for the state #1 (`"0000"`), but does not hold for the states #6, #8, #11, #13, #17 (`"0001"`, `"0010"`, ..., `"0101"`), nor #15 (`"01XX"`).
+It is unknown whether it holds for #5 (`"XXXX"`), as this one may represent `0000` among others. We can switch to `EF![value == 0]` to 
 see how we fare there:
 <a href="../images/gui_5.png"><img src="../images/gui_5.png" style="width:100%; margin: 1.5em; margin-left: auto; margin-right: auto; display:block"></a>
 
@@ -136,14 +136,14 @@ only the lowest-bit input will be used after masking, and also adding an irrelev
         irrelevant: Bitvector<16>,
     }
 (...)
-        fn init(&self, _input: &Input) -> State {
+        fn init(&self, _input: &Input, _param: &Param) -> State {
             State {
                 value: Bitvector::<4>::new(0),
                 irrelevant: Bitvector::<16>::new(0),
             }
         }
 
-        fn next(&self, state: &State, input: &Input) -> State {
+        fn next(&self, state: &State, input: &Input, _param: &Param) -> State {
             let mut next_value = state.value;
             let increment_value_masked = input.increment_value & Bitvector::<32>::new(1);
 
