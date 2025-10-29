@@ -125,7 +125,7 @@ It is also possible to use the parameters in the next state computation function
 > While the abstraction-refinement framework used by **machine-check** is used even for abstracting and refining parameters, uses such as the above example are currently not a very good fit due to the current absence of relational domains more powerful than equality.
 >
 
-# System Hierarchy Checking
+## System Hierarchy Checking
 
 We can also use parametric systems with a different thought process. Consider that you are given a specification in form of a system which has some unspecified parts, and an implementation that should "fill the spots" while retaining the behaviours of the specification system. Then, you can actually think of the specification system as a system that is parametrised by variables determining the unspecified values.
 
