@@ -123,7 +123,7 @@ $ machine-check-riscv -E basic.elf --property 'AF![AG![pc_within_symbol!("not_he
 The macro `pc_within_symbol` only works on symbols that have entries for a Program Counter range, e.g. functions. To consider only the start of the range or a symbol with a single Program Counter Address, there is a macro `pc_at_symbol`. For example, we verify whether the previous reach&stay property holds at the `assign1` label.
 
 ```console
-machine-check-riscv -E basic.elf --property 'AF![AG![pc_at_symbol!("assign1")]]'
+$ machine-check-riscv -E basic.elf --property 'AF![AG![pc_at_symbol!("assign1")]]'
 [2025-12-17T15:00:03Z INFO  machine_check] Starting verification.
 [2025-12-17T15:00:03Z INFO  machine_check::verify] Verifying the inherent property first.
 [2025-12-17T15:00:03Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
@@ -145,7 +145,7 @@ The property does not hold, since the label corresponds to a single instruction 
 For something a little more interesting, let us verify that when we are inside `main`, it should be possible for the variable `button_pressed` to become 1 with some inputs (i.e. being in `main` implies `button_pressed` being 1; note that $a \implies b$ can be written as `!a || b` in classical logic). For viewing the values of variables, a third custom property macro `typed_symbol` is provided, which expands to an expression that gives the value of the variable as a correctly sized bitvector. Note that this is currently limited to variables with a fixed place in the data SRAM (typically globals).
 
 ```console
-'AG![!(pc_at_symbol!("main")) || EF![typed_symbol!("button_pressed") == 1]]'
+$ machine-check-riscv -E basic.elf --property 'AG![!(pc_at_symbol!("main")) || EF![typed_symbol!("button_pressed") == 1]]'
 [2025-12-17T15:09:56Z INFO  machine_check] Starting verification.
 [2025-12-17T15:09:56Z INFO  machine_check::verify] Verifying the inherent property first.
 [2025-12-17T15:09:56Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
@@ -165,7 +165,7 @@ For something a little more interesting, let us verify that when we are inside `
 To verify the property, a refinement of the state space was necessary to distinguish between the cases of the input pin being 0 and the input pin being 1. We can also see whether `button_pressed` becomes 1 with arbitrary inputs.
 
 ```console
-'AG![!(pc_at_symbol!("main")) || AF![typed_symbol!("button_pressed") == 1]]'
+$ machine-check-riscv -E basic.elf --property 'AG![!(pc_at_symbol!("main")) || AF![typed_symbol!("button_pressed") == 1]]'
 [2025-12-17T15:17:59Z INFO  machine_check] Starting verification.
 [2025-12-17T15:17:59Z INFO  machine_check::verify] Verifying the inherent property first.
 [2025-12-17T15:17:59Z INFO  machine_check::verify] The inherent property holds, proceeding to the given property.
