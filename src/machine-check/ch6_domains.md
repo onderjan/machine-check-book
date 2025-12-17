@@ -64,7 +64,7 @@ Also implemented is the equality domain, which tracks that two variables are equ
 just the values of one variable, but the relationships between more variables that limit the values.
 
 The idea behind the implementation is to number variables such as input and parameters, and track the number through operations where the actual value does
-not change. This can allow us to determine other values as well. Let's illustrate this by the [exclusive OR example](https://docs.rs/crate/machine-check/0.7.0/source/examples/parametric.rs).
+not change. This can allow us to determine other values as well. Let's illustrate this by the [exclusive OR example](https://docs.rs/crate/machine-check/0.7.1/source/examples/parametric.rs).
 In the example, an input is copied to two distinct state variables, which are combined by an exclusive OR in the next state. We know that an exclusive OR
 of the same values produces a zero and the values are the same, but **machine-check** must refine down to single values by default, a worst-case scenario:
 

@@ -15,7 +15,7 @@ whether it holds in a set of systems. This gives us three possibilities for veri
 If we verify that the property holds or it does not for all systems, it means that we can safely ignore the behaviour hidden by the parameter. If we verify that it only holds in some, it can also be a cause for concern
 if this does not match our expectations.
 
-Let's look at the simple [parametric example](https://docs.rs/crate/machine-check/0.7.0/source/examples/parametric.rs) for **machine-check**:
+Let's look at the simple [parametric example](https://docs.rs/crate/machine-check/0.7.1/source/examples/parametric.rs) for **machine-check**:
 
 ```rust
 (...)
@@ -116,7 +116,7 @@ note: to see what the problems were, use the option `--future-incompat-report`, 
 +--------------------------------+
 ```
 
-No matter the `max_value`, we can always take the path where the state value is zero forever, which disproves the property. See the [parametric example](https://docs.rs/crate/machine-check/0.7.0/source/examples/parametric.rs) for examples of more properties.
+No matter the `max_value`, we can always take the path where the state value is zero forever, which disproves the property. See the [parametric example](https://docs.rs/crate/machine-check/0.7.1/source/examples/parametric.rs) for examples of more properties.
 
 It is also possible to use the parameters in the next state computation function: in that case, each time instant has its own "fresh" parameter argument independent of others instead of the single unchanging `max_value` in the example, essentially producing an infinite number of systems fulfilling the description.
 
@@ -129,7 +129,7 @@ It is also possible to use the parameters in the next state computation function
 
 We can also use parametric systems with a different thought process. Consider that you are given a specification in form of a system which has some unspecified parts, and an implementation that should "fill the spots" while retaining the behaviours of the specification system. Then, you can actually think of the specification system as a system that is parametrised by variables determining the unspecified values.
 
-Let's look at the simple [system hierarchy example](https://docs.rs/crate/machine-check/0.7.0/source/examples/hierarchy.rs) for **machine-check**, where a specification of a system performing an unsigned division of two numbers says that the result of division by zero must be either 0 (as in e.g. some AVR processors) or the unsigned maximum (as in e.g. RISC-V), but leaves the implementation free to choose one of them. The specification result is represented by `specified_value`, the implementation result as `impl_value`, and the relevant computation is as follows (`param.unspecified` is a signed single-bit parameter, which will be extended either to 0 or -1, i.e. the maximum unsigned value):
+Let's look at the simple [system hierarchy example](https://docs.rs/crate/machine-check/0.7.1/source/examples/hierarchy.rs) for **machine-check**, where a specification of a system performing an unsigned division of two numbers says that the result of division by zero must be either 0 (as in e.g. some AVR processors) or the unsigned maximum (as in e.g. RISC-V), but leaves the implementation free to choose one of them. The specification result is represented by `specified_value`, the implementation result as `impl_value`, and the relevant computation is as follows (`param.unspecified` is a signed single-bit parameter, which will be extended either to 0 or -1, i.e. the maximum unsigned value):
 
 ```rust
             if input.divisor != Unsigned::<4>::new(0) {

@@ -2,7 +2,7 @@
 
 This page details the steps necessary to migrate the systems and properties to new versions of **machine-check**, starting from version 0.4.0. Note that this only covers systems and properties which successfully compile and execute without errors in the earlier version.
 
-## 0.6.1 → 0.7.0
+## 0.6.1 → 0.7.1
 
 No changes necessary.
 

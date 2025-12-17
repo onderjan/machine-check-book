@@ -24,7 +24,7 @@ It is possible to verify various properties of Btor2 systems using **machine-che
 
 ## Safety
 
-To actually verify something, we can obtain a simple Btor2 system, e.g. [`beads.btor2`](https://docs.rs/crate/machine-check-hw/0.7.0/source/examples/beads.btor2) from **machine-check-hw** examples. By pointing machine-check-hw to a Btor2 file, it can verify the safety of the system, as specified in the Btor2 file, with a property `AG![safe == 1]`, which uses a special field `safe`:
+To actually verify something, we can obtain a simple Btor2 system, e.g. [`beads.btor2`](https://docs.rs/crate/machine-check-hw/0.7.1/source/examples/beads.btor2) from **machine-check-hw** examples. By pointing machine-check-hw to a Btor2 file, it can verify the safety of the system, as specified in the Btor2 file, with a property `AG![safe == 1]`, which uses a special field `safe`:
 ```console
 $ machine-check-hw verify ./beads.btor2 --property 'AG![safe == 1]'
 [2025-10-28T22:38:52Z INFO  machine_check_compile::verify] Transcribing the system into a machine.

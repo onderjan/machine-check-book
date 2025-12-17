@@ -72,16 +72,16 @@ We can use **machine-check-avr** to find a verify a property in the compiled mac
 ```console
 cargo install machine-check-avr
     Updating crates.io index
-  Installing machine-check-avr v0.7.0
+  Installing machine-check-avr v0.7.1
     Updating crates.io index
      Locking 97 packages to latest compatible versions
    (...)
-   Compiling machine-check-avr v0.7.0
+   Compiling machine-check-avr v0.7.1
     Finished `release` profile [optimized] target(s) in 22.25s
 warning: the following packages contain code that will be rejected by a future version of Rust: partitions v0.2.4
 note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
   Installing (...)\.cargo\bin\machine-check-avr.exe
-   Installed package `machine-check-avr v0.7.0` (executable `machine-check-avr.exe`)
+   Installed package `machine-check-avr v0.7.1` (executable `machine-check-avr.exe`)
 ```
 
 The [Intel HEX](https://en.wikipedia.org/wiki/Intel_HEX) file obtained via compilation (that we can use to program the ATmega328P or provide to **machine-check-avr**) is not very self-explanatory (let us call it `calibration_original.hex`):

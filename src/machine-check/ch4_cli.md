@@ -1,8 +1,8 @@
 # Command-line Interface
 
-In the previous chapters, the Command-Line Interface was used for controlling **machine-check**. When [`machine_check::run`](https://docs.rs/machine-check/0.7.0/machine_check/fn.run.html) is called, it parses the program arguments and executes the verification accordingly. It is also possible to augment the arguments using [`machine_check::parse_args`](https://docs.rs/machine-check/0.7.0/machine_check/fn.parse_args.html) and [`machine_check::execute`](https://docs.rs/machine-check/0.7.0/machine_check/fn.execute.html), although the actual way this works may change.
+In the previous chapters, the Command-Line Interface was used for controlling **machine-check**. When [`machine_check::run`](https://docs.rs/machine-check/0.7.1/machine_check/fn.run.html) is called, it parses the program arguments and executes the verification accordingly. It is also possible to augment the arguments using [`machine_check::parse_args`](https://docs.rs/machine-check/0.7.1/machine_check/fn.parse_args.html) and [`machine_check::execute`](https://docs.rs/machine-check/0.7.1/machine_check/fn.execute.html), although the actual way this works may change.
 
-The full list of arguments can be [found here](https://docs.rs/machine-check/0.7.0/machine_check/struct.ExecArgs.html) or be printed using `--help`. The usually useful arguments are:
+The full list of arguments can be [found here](https://docs.rs/machine-check/0.7.1/machine_check/struct.ExecArgs.html) or be printed using `--help`. The usually useful arguments are:
  - `--inherent`: Orders **machine-check** to verify the inherent property.
  - `--property <PROPERTY>`: Orders **machine-check** to verify the given property. The inherent property is verified beforehand by default.
  - `--assume-inherent`: Does not verify the inherent property before the given property. If the inherent property does not hold, the result of verifying the given property will be meaningless.

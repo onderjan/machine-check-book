@@ -14,7 +14,7 @@ Unlike some other verifiers, **machine-check** is designed to be *sound*, never 
 
 Interested? [Read the Quickstart.](./machine-check/ch1_quickstart.md)
 
-> &#x2139;&#xFE0F; **Machine-check** [version 0.7.0](https://crates.io/crates/machine-check/0.7.0) has been released on 29th October 2025, with support for more expressive properties and other improvements. [Read the accompanying blogpost.](https://machine-check.org/blog/05-v0-7-0/) 
+> &#x2139;&#xFE0F; **Machine-check** [version 0.7.1](https://crates.io/crates/machine-check/0.7.1) has been released on 29th October 2025, with a new RISC-V system crate available and minor improvements. [Read the accompanying blogpost.](https://machine-check.org/blog/06-v0-7-1/) 
 >
 > &#x1F6E0;&#xFE0F; Currently, **machine-check** is in active development. While the basic building blocks are in place, some details may still change considerably in the future.
 >

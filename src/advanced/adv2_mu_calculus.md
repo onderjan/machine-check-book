@@ -37,7 +37,7 @@ Note how the `E`/`A` path quantifier only affects the choice of `EX!`/`AX!`, whi
 
 ## Example: Holds in Even Positions
 
-The example [mu_even](https://docs.rs/crate/machine-check/0.7.0/source/examples/mu_even.rs) in **machine-check** demonstrates a system with an interesting property not expressible in Computation Tree Logic, nor the related Linear Tree Logic and CTL*: a property holding at even time instants. The value is computed as follows:
+The example [mu_even](https://docs.rs/crate/machine-check/0.7.1/source/examples/mu_even.rs) in **machine-check** demonstrates a system with an interesting property not expressible in Computation Tree Logic, nor the related Linear Tree Logic and CTL*: a property holding at even time instants. The value is computed as follows:
 
 ```rust
 (...)
@@ -80,7 +80,7 @@ Variations of the local reasoning could be used to construct other properties of
 
 ## Example: Infinitely Often
 
-The example [mu_infinitely_often](https://docs.rs/crate/machine-check/0.7.0/source/examples/mu_infinitely_often.rs) demonstrates the ability of the μ-calculus to verify a property that cannot be expressed in Computation Tree Logic, but can be in Linear Time Logic: that something happens *infinitely often*. This can be expressed as **FG** in LTL. The similar property **AFAG** in CTL describes a different concept, that something happens *eventually forever*. The example gives the standard system that reveals the difference between the two: in state 0 where *p* holds, we have a choice between looping and going to state 1 where *p* does not hold. From state 1, the only possible transition is to state 2 where *p* holds again, and where the system loops forever.
+The example [mu_infinitely_often](https://docs.rs/crate/machine-check/0.7.1/source/examples/mu_infinitely_often.rs) demonstrates the ability of the μ-calculus to verify a property that cannot be expressed in Computation Tree Logic, but can be in Linear Time Logic: that something happens *infinitely often*. This can be expressed as **FG** in LTL. The similar property **AFAG** in CTL describes a different concept, that something happens *eventually forever*. The example gives the standard system that reveals the difference between the two: in state 0 where *p* holds, we have a choice between looping and going to state 1 where *p* does not hold. From state 1, the only possible transition is to state 2 where *p* holds again, and where the system loops forever.
 
 Let us first verify the CTL property *eventually forever*:
 

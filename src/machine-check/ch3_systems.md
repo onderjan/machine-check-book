@@ -72,7 +72,7 @@ Onto the more interesting part, the structure input:
     }
 ```
 
-This defines how the input of the Finite-State Machine (FSM) looks like. Do not worry about the `derive` line; this is needed simply to ensure that it is sensible to manipulate using `machine-check`. We define a structure `Input` that has exactly one field `increment_value` of type `Bitvector<1>`. [Bitvector](https://docs.rs/machine-check/0.7.0/machine_check/struct.Bitvector.html) is a type provided by `machine-check` that has no signedness information and wrapping arithmetic operations. The number in angled brackets determines the bit-width, i.e. `increment-value` has only a single bit. So, basically, the input of the FSM is just a single bit. The next lines are:
+This defines how the input of the Finite-State Machine (FSM) looks like. Do not worry about the `derive` line; this is needed simply to ensure that it is sensible to manipulate using `machine-check`. We define a structure `Input` that has exactly one field `increment_value` of type `Bitvector<1>`. [Bitvector](https://docs.rs/machine-check/0.7.1/machine_check/struct.Bitvector.html) is a type provided by `machine-check` that has no signedness information and wrapping arithmetic operations. The number in angled brackets determines the bit-width, i.e. `increment-value` has only a single bit. So, basically, the input of the FSM is just a single bit. The next lines are:
 
 ```rust
     #[derive(Clone, PartialEq, Eq, Hash, Debug)]
