@@ -4,6 +4,8 @@
 
 The Intel HEX files used to load the program into the microcontroller can be provided as an argument to **machine-check-avr**: [see the docs for details](https://docs.rs/machine-check-avr/latest/machine_check_avr/). This enables machine-code verification using **machine-check**.
 
+## Usage example
+
 For an example discussed in [a presentation about a previous version of **machine-check**](https://avm2024.informatik.uni-freiburg.de/assets/presentations/jan_onderka.pdf) (the program on the slides is simplified for visibility), consider the following program written in C that can be used for calibration using binary search:
 
 ```c
@@ -183,5 +185,5 @@ $ cargo uninstall machine-check-avr
 >
 > &#x1F4A1;&#xFE0F; Generally, the major problem with verification of complex systems such as machine-code systems is that **machine-check** may not choose the refinements correctly and the time or memory needed for verification will be unacceptable. This will depend on the program and the cleverness of **machine-check** when using the chosen strategy, and can be investigated [using the GUI](../machine-check/ch5_gui.md).
 >
-> &#x1F6E0;&#xFE0F; Currently, the ease of use of **machine-check-avr** leaves something to be desired: for example, if we want to verify a property depending on some line in the program source code, we have to obtain the mapping of the source-code line to the the value of the Program Counter (`PC`) ourselves. In the future, **machine-check-avr** could be extended to obtain this information automatically from a file with debug information.
+> &#x1F6E0;&#xFE0F; Currently, the ease of use of **machine-check-avr** leaves something to be desired: for example, if we want to verify a property depending on some line in the program source code, we have to obtain the mapping of the source-code line to the the value of the Program Counter (`PC`) ourselves. In the future, **machine-check-avr** could be extended to obtain this information automatically from a file with debug information from ELF files, as is currently possible for the [RISC-V system](./machine-check-riscv.md).
 >

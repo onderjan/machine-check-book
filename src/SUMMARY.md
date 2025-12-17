@@ -16,6 +16,7 @@
 
 # System Crates
 - [machine-check-avr](./systems/machine-check-avr.md)
+- [machine-check-riscv](./systems/machine-check-riscv.md)
 - [machine-check-hw](./systems/machine-check-hw.md)
 
 # Advanced Topics
